@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cloudflared
+  name: cloudflared-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudflared
+  template:
+    metadata:
+      labels:
+        app: cloudflared
+    spec:
+      containers:
+      - args:
+        - tunnel
+        - --no-autoupdate
+        - run
+        - tunnel  
+        env:
+          - name: TUNNEL_TOKEN 
+            valueFrom:
+              secretKeyRef:
+                name: cloudflared 
+                key: token
+        image: cloudflare/cloudflared:latest
+        name: cloudflared
+      restartPolicy: Always
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx-hugo
+  name: nginx-hugo-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-hugo
+  template:
+    metadata:
+      labels:
+        app: nginx-hugo
+    spec:
+      containers:
+      - image: localhost:5000/alexdarbyshire-site:latest
+        name: nginx-hugo
+        ports:
+          - containerPort: 80  
+      restartPolicy: Always
+
+---
+
+apiVersion: v1 
+kind: Service
+metadata:
+  name: nginx-hugo
+spec:
+  selector:
+    app: nginx-hugo 
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80  
+---
