@@ -80,7 +80,7 @@ If you are keen you can do it all in the container.
 The following command examples are run in Ubuntu VM's bash shell.
 
 
-#### Update the package repository and install hugo and git
+#### Update the package repository lists and install hugo and git
 ```
 sudo apt update
 sudo apt install hugo git
