@@ -20,6 +20,12 @@ paginate = 10
 # not pluralize title pages by default
 pluralizelisttitles = false
 
+[markup]
+  [markup.tableOfContents]
+    startLevel = 3
+    endLevel = 3
+    ordered = false
+
 #Allow direct use of html and script in markdown (TODO: Be Hugo-onic and use shortcode instead)
 [markup.goldmark.renderer]
   unsafe = true

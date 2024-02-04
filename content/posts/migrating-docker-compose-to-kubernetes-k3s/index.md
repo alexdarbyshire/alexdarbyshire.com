@@ -3,6 +3,7 @@ title: "Migrating from Docker Compose to Kubernetes (K3s)"
 date: 2024-01-28T11:54:09+10:00
 author: "Alex Darbyshire"
 banner: "img/banners/docker-whale-migration-to-kubernetes.jpeg"
+toc: true
 tags:
   - Docker
   - Kubernetes 
@@ -31,7 +32,7 @@ The major cloud service providers offer their own abstracted versions of Kuberne
 ## Example
 [Checkout the end result in GitHub](https://github.com/alexdarbyshire/alexdarbyshire.com/tree/b64dd9477306d4e4379bc8bc7e5c7652638dc306)
  
-## Tech stack
+## Tech Stack
 - **K3s**
 - **Ubuntu Linux**
 - **Docker**
@@ -55,7 +56,7 @@ curl -sfL https://get.k3s.io | sh -
 ```
 ![image](1-install-k3s.png)
 
-#### Confirm K3s Node Creation
+#### Confirm K3s node creation
 ```
 sudo k3s kubectl get node
 ```
@@ -68,7 +69,7 @@ sudo snap install kompose
 ```
 ![image](3-install-kompose.png)
 
-### Convert, Configure, and Run
+### Convert Docker Compose to Manifests
 #### Convert with Kompose
 ```
 kompose convert
@@ -117,7 +118,7 @@ We need to:
 - pass our token into K3s using secrets, and
 - add a Kubernetes service manifest for nginx-hugo. Kompose did not have sufficient info to tell that cloudflared needed to connect to nginx-hugo.
 
-#### Create a Private Registry
+### Create and Populate Private Registry 
 We are creating the registry using K3s. It would be easier in Docker, and Docker may well be the better tool for the task, but that won't help us learn K3s.
 First we will create a subdirectory called deploy for housing our K3s manifests.
 ```
@@ -226,7 +227,7 @@ echo "secrets.yaml" >> .gitignore
 
 Edit secrets.yaml and add the base64 encoded token into it.
 
-#### Add the Kubernetes manifest for cloudflared-hugo
+### Correct the Kubernetes Manifest for the cloudflared-hugo Image
 The output of the Kompose command needed a fair bit of work. It gives us an idea of its limitations. 
 
 We will not use the files it created, below is a cleaned up combined version with the missing requirements added (service, port mappings, and updated image path).
@@ -309,7 +310,7 @@ spec:
 The deploy folder should now look like this:
 ![image](10-ls-deploy-folder.png)
 
-#### Apply all the manifests
+### Apply Manifests and Remove Docker Equivalents
 Run the following from the `deploy` directory.
 ```
 sudo k3s kubectl apply -f .

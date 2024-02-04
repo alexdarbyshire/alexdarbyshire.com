@@ -25,7 +25,7 @@ Note that there are cheaper and simpler ways to host a top-level domain website,
 
 Note, the example has additions to `config.toml`, `content/`, and `static/` not included in this post. Additional content being the first three posts on this site and more theme setup.
 
-## Tech stack
+## Tech Stack
 Here’s a brief overview of the tools we’ll be using:
 
 - **Ubuntu Linux** - variant of the famous open-source operating system, *thanks Linus Torvalds et al.*
@@ -206,26 +206,26 @@ docker rm test-hugo
 
 ### Setup a Cloudflare tunnel
 
-#### Login to Cloudflare dashboard
+##### Login to Cloudflare dashboard
 Click the domain. If it is missing see [Bring Your Own](#Bring-Your-Own)
 ![image](12-cloudflare-select-domain.png)
 
-#### Click into `DNS` section
+##### Click into `DNS` section
 ![image](13-cloudflare-click-dns.png)
 
 Within the domain's DNS check there aren't any CNAME records for yourdomain.com and www, if there are, delete them by clicking into `Edit` and then `Delete`.
 ![image](13-cloudflare-check-dns-records.png)
 
-#### Click back button to get back to the dashboard
+##### Click back button to get back to the dashboard
 ![image](14-cloudflare-back-to-dashboard.png)
 
-#### Click `Zero Trust`
+##### Click `Zero Trust`
 ![image](15-cloudflare-click-zero-trust.png)
 
-#### Click `Tunnels` under Access
+##### Click `Tunnels` under Access
 ![image](16-cloudflare-click-tunnels.png)
 
-#### Create a tunnel
+##### Create a tunnel
 Give it any name to identify it
 ![image](17-cloudflare-create-a-tunnel.png)
 

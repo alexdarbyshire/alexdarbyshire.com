@@ -3,6 +3,7 @@ title: "Streamlining Secret Management with Vault in K3s Kubernetes"
 date: 2024-01-30T06:04:09+10:00
 author: "Alex Darbyshire"
 banner: "img/banners/shhh-secrets-in-a-big-vault.jpeg"
+toc: true
 tags:
   - Kubernetes 
   - Linux
@@ -41,7 +42,7 @@ This is building upon the [previous post]({{< ref "/posts/migrating-docker-compo
 
 It goes into more detail about what the steps prior to Terraform are doing.
 
-## Tech stack
+## Tech Stack
 
 - **K3s**
 - **Ubuntu Linux**
@@ -58,7 +59,7 @@ It goes into more detail about what the steps prior to Terraform are doing.
 
 ## Steps
 
-### Helm
+### Install Helm 
 #### Install Helm and jq
 ```shell
 sudo snap install helm --classic
@@ -94,7 +95,7 @@ echo "export KUBECONFIG=~/.kube/config" >> ~/.profile
 ```
 
 
-### Vault
+### Setup Vault and Consul
 #### Add and Update Hashicorp Helm Repository
 ```shell
 sudo helm repo add hashicorp https://helm.releases.hashicorp.com
@@ -159,7 +160,7 @@ sudo k3s kubectl exec vault-0 -- vault operator init -key-shares=2 -key-threshol
 Here is what the outputted file looks like:
 ![Cluster Keys JSON example](7-cluster-keys-json.png)
 
-#### Unseal
+#### Unseal the Vault
 We want to read the keys out of the JSON and pass them to Vault. We could do something like
 `sudo k3s kubectl exec vault-0 -- vault operator unseal $(jq -r '.unseal_keys_b64[0]' cluster-keys.json)`
 
@@ -246,13 +247,13 @@ vault kv put secret/cloudflared/tunnel token="insert_cloudflared_tunnel_token"
 ![Add Secret to Vault](14-add-secret-to-vault.png)
 
 
-#### Confirm Terraform Success
+#### Confirm Terraform success
 ![Confirm Terraform Success](15-confirm-terraform-success.png)
 
 Implement use of Vault sidecar to inject env vars - https://developer.hashicorp.com/vault/tutorials/vault-agent/agent-env-vars
 
 
-### Add and Implement our Cloudflared Tunnel Token Secret
+### Add Secret to Vault and Retrieve
 In the section we bring it all together by implementing a Vault sidecar service to inject our secret as the `TUNNEL_TOKEN` environment variable.
 
 There is a slight challenge to solve in doing this. The stock Cloudflared image does not have a shell and to inject environment variables from Vault into pods we need a shell. Also, the cloudflared application does not allow reading the token from a file.
@@ -265,7 +266,7 @@ Three solutions come to mind:
 Will use method 3 for now. In a future post we might look at using the Cloudflared API via Terraform or directly to get our tunnel creation included as part of config as code.
 
 
-#### Move Helm Config files
+#### Move Helm config files
 These are mixed up with our Kubernetes files, moving them to their own directory will make life easier.
 ```shell
 mkdir helm
@@ -273,7 +274,7 @@ mv helm-* helm/
 ```
 ![Move Helm Files to Subdirectory](16-move-helm-files-to-subdirectory.png)
 
-#### Add K3s ServiceAccount and Secret
+#### Add K3s service account and secret
 
 Add file `deploy/vault-auth-service-account.yaml` with the following content:
 
@@ -349,7 +350,7 @@ sudo k3s kubectl apply -f vault-auth-service-account.yaml,vault-auth-secret.yaml
 
 ![Apply Vault Auth Manifests](17-apply-vault-auth-manifests.png)
 
-#### Update Cloudflared Manifest to Use Secret from Vault
+#### Update Cloudflared Manifest to use secret from Vault
 We'll use [a Vault Agent Sidecar](https://developer.hashicorp.com/vault/docs/platform/k8s/injector/examples#deployments-statefulsets-etc) and a few tricks to inject the Cloudflared tunnel token into our Cloudflared pods as an environment variable.
 
 We will also improve our Cloudflared K3s deployment definition which is pretty basic after using Kompose to migrate, e.g. it doesn't have a healthcheck.
@@ -412,7 +413,7 @@ spec:
         args:
         - tunnel
         - --no-autoupdate
-        - --metrics=localhost:3333
+        - --metrics=0.0.0.0:3333
         - run
         - tunnel
         env:
@@ -511,5 +512,5 @@ git add .
 git commit -m "Add Vault for secrets management"
 ```
 
-###
-Done. Time to start thinking about the next project. 
+#### Done. 
+Time to start thinking about the next project. 

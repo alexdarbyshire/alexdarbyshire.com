@@ -3,6 +3,7 @@ title: "Scaling GitHub Actions with Kubernetes: A Guide to ARC Deployment"
 date: 2024-02-03T23:08:09+10:00
 author: "Alex Darbyshire"
 banner: "img/banners/space-arc-at-sail.jpeg"
+toc: true
 tags:
   - Kubernetes 
   - GitHub Actions
@@ -26,12 +27,7 @@ Using this site as our continuing example, ARC will be implemented to build our 
 
 In the last three posts the deployment process has been via `docker build`, `docker push` and some `kubectl` commands.
 
-## What's the plan?
-- Install ARC using Helm
-- Connect ARC to GitHub
-- Create a pipeline
-
-Again, building from the previous post and [the resulting repo](https://github.com/alexdarbyshire/alexdarbyshire.com/tree/5f2c58ea37fb9a1cfc9c6e1eddb0c5d98e422b0d). 
+We will be continuing on from the previous post and [the resulting repo](https://github.com/alexdarbyshire/alexdarbyshire.com/tree/5f2c58ea37fb9a1cfc9c6e1eddb0c5d98e422b0d). 
 ## Example
 
 [Checkout the end result in GitHub](https://github.com/alexdarbyshire/alexdarbyshire.com/tree/0c8a34f289dd37da93c237be24cc82c3445b2dd2)
@@ -40,7 +36,7 @@ Again, building from the previous post and [the resulting repo](https://github.c
 [ARC Documentation](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/about-actions-runner-controller)
 
 
-## Tech stack
+## Tech Stack
 - ARC
 - K3s
 - Ubuntu Linux
@@ -235,6 +231,9 @@ oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set \
 ```
 ![Install ARC Runner Set Helm Chart](7-install-arc-runner-set-chart.png)
 #### Check ARC Pods are up
+```shell
+kubectl get pods
+```
 ![Check ARC pods are up](8-check-arc-pods-are-up.png)
 
 Not up? Check the ARC controller logs. `kubectl logs ...` where ... is the name of the controller pod. If namespaces are specified there may not be log events in the case of the controller not having correct permissions for the kube API.
