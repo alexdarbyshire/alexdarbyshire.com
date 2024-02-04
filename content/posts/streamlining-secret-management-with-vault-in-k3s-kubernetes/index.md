@@ -12,7 +12,7 @@ tags:
   - Helm
 ---
 
-This post will explore deploying Hashicorp Vault to K3s (Kubernetes distribution) using Helm and then configuring it with Terraform. This will enable us to store our secret state data in Vault and make those secrets available to our K3s resources, including self-hosted GitHub runners.
+This post will explore deploying Hashicorp Vault to K3s (Kubernetes distribution) using Helm and then configuring it with Terraform. This will enable us to store our secret state data in Vault and make those secrets available to our K3s resources.
 
 Vault is an enterprise level secrets manager configurable for high availability which integrates with Kubernetes and many CI toolsets.
 
@@ -73,10 +73,10 @@ The shell will need to be renewed for the added environment variable to take eff
 
 Note we used piped the stdout of the `echo` command to `sudo tee` instead of the shorthand `>>` append operator as the shorthand will not work when the executing user doesn't have write permissions for the file. 
 
-![Set and check KUBECONFIG Environment Variable](2-set-and-check-kubeconfig-env.png)
+![Set and check KUBECONFIG Environment Variable](3-set-and-check-kubeconfig-env.png)
 
 ##### Alternative option for KUBECONFIG
-This method exports a copy of the kube config to the users home directory and adds the KUBECONFIG environment variable for the user. 
+This method exports a copy of the kube config to the user's home directory and adds the KUBECONFIG environment variable for the user. 
 
 This way `sudo` is no longer needed to run `kubectl` as it no longer needs access to `/etc/rancher/k3s/k3s.yaml`.
 ```bash
@@ -178,7 +178,7 @@ Then after making a copy of the contents, I suggest getting rid of the file, `rm
 Checking the pods now should have them all showing as available.
 
 ### Configure Terraform 
-Originally I was thinking of leaving Terraform for a later post and using Vault `.hcl` files and the command line, then this post would have been very similar to Vault's minikube tutorial.
+Originally intended to leave Terraform for a later post and using Vault `.hcl` files and the command line, then this post would have been very similar to Vault's minikube tutorial.
 
 On reflection, we may as well get started with Terraform now.
 
@@ -212,7 +212,7 @@ sudo k3s kubectl port-forward vault-0 8200:8200
 
 Set the resulting address as the standard `VAULT_ADDR` environment variable, set the token as an environment to give Terraform the address and the door pass. 
 
-**Security** To prevent exposing the vault token via shell history and in memory, we could not set it as environment variable and terraform will prompt for it. 
+**Security** This will expose the token in the shell history and in memory on the host.  
 
 Then initialise the Terraform with the Vault provider, and apply the config.
 
@@ -229,7 +229,9 @@ terraform apply
 ![Apply Terraform Config 2](13-terraform-apply-2.png)
 
 #### Add Cloudflared Token to Vault
-We still do this step manually as we don't want to add credentials to the Terraform files.
+We still do this step manually as we don't want to add credentials to the Terraform files. 
+
+Remember that we base64 encoded the token before adding it to our `.env` file, so if sourcing it from there decode it `echo "token_here" | base64 -d` or just get the original from the Cloudflare UI.
 
 ```bash
 sudo k3s kubectl exec --stdin=true --tty=true vault-0 -- /bin/sh
@@ -241,9 +243,6 @@ vault kv put secret/cloudflared/tunnel token="insert_cloudflared_tunnel_token"
 
 #### Confirm Terraform success
 ![Confirm Terraform Success](15-confirm-terraform-success.png)
-
-Implement use of Vault sidecar to inject env vars - https://developer.hashicorp.com/vault/tutorials/vault-agent/agent-env-vars
-
 
 ### Add Secret to Vault and Retrieve
 In the section we bring it all together by implementing a Vault sidecar service to inject our secret as the `TUNNEL_TOKEN` environment variable.
@@ -335,7 +334,7 @@ metadata:
 type: kubernetes.io/service-account-token
 ```
 
-Apply the new manifests
+Apply the new manifests.
 ```bash
 sudo k3s kubectl apply -f vault-auth-service-account.yaml,vault-auth-secret.yaml
 ````
@@ -351,7 +350,7 @@ The sidecar is configured using annotations in the Deployment manifest's templat
 
 The injected secret is accessible through a pod's filesystem. We use an initContainer to get the secret from the filesystem and add it in to K8s secret store to allow it to be loaded as an environment variable before the cloudflared container starts. 
 
-There is quite of added complexity with Cloudflared not having a shell, not accepting the tunnel token from a file, and command line kubernetes not having a parameter to opt out of base64 encoding when creating a secret. Will definitely be looking at using a Cloudflare credential file type workflow in future.
+There is a bit of added complexity with Cloudflared not having a shell and not accepting the tunnel token from a file. Will definitely be looking at using a Cloudflare credential file type workflow in future.
 
 In `deploy/hugo-cloudflared.yaml`, update the Cloudflared deployment section to:
 ```yaml
@@ -396,8 +395,7 @@ spec:
             - |
               source /vault/secrets/token
               kubectl delete secret cloudflared --ignore-not-found > /dev/null 2>&1
-              kubectl create secret generic cloudflared --type=stringData --from-literal="token=temp"
-              kubectl patch secret cloudflared --patch='{"data": { "token": "'$TUNNEL_TOKEN'" } }' #This allows us to write token as a string without K8s re-encoding as base64 (it comes as base64 from cloudflare)
+              kubectl create secret generic cloudflared --from-literal="$TUNNEL_TOKEN"
 
       containers:
       - image: cloudflare/cloudflared:latest
@@ -473,13 +471,11 @@ spec:
 ---
 ```
 
-#### Apply the new manifest and check the pods
+#### Patch the resource and check the pods
 
 ```yaml
-sudo k3s kubectl delete -f hugo-cloudflared.yaml
-sudo k3s kubectl apply -f hugo-cloudflared.yaml
+sudo k3s kubectl patch -f hugo-cloudflared.yaml
 ```
-In production, we would do a rolling update instead of deleting the resources and creating them again.
 
 ![Apply and check hugo cloudfared manifest](18-apply-and-check-hugo-cloudflared-manifest.png)
 

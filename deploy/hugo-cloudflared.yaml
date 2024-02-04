@@ -39,8 +39,7 @@ spec:
             - |
               source /vault/secrets/token 
               kubectl delete secret cloudflared --ignore-not-found > /dev/null 2>&1
-              kubectl create secret generic cloudflared --type=stringData --from-literal="token=temp"
-              kubectl patch secret cloudflared --patch='{"data": { "token": "'$TUNNEL_TOKEN'" } }' #This allows us to write token as a string without K8s re-encoding as base64 (it comes as base64 from cloudflare)
+              kubectl create secret generic cloudflared --from-literal="$TUNNEL_TOKEN"
 
       containers:
       - image: cloudflare/cloudflared:latest
