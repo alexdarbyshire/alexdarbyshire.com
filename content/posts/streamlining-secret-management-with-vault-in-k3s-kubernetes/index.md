@@ -24,15 +24,7 @@ The prior approach was having an `.example` secret state file, adding the actual
 
 Using Vault for one secret is like dropping a shipping container of hammers onto a small nail to hit the nail in. This post is about learning to use the tools, for the example use case there are more elegant solutions.
 
-## What's the plan?
-
-We will set about:
-- installing Helm
-- installing Vault and Vault's companion storage service Consul,  
-- installing and configuring Vault using Terraform, and
-- adding the token to Vault then updating the Cloudflared manifest to source it from there.
-
-This is building upon the [previous post]({{< ref "/posts/migrating-docker-compose-to-kubernetes-k3s/index.md" >}} "Migrating from Docker Compose to Kubernetes (K3s)") which got our [GitHub repo to here.](https://github.com/alexdarbyshire/alexdarbyshire.com/tree/e289cae54d452745e30cf733e06c0b3c569adaec)
+Note, we are building upon the [previous post]({{< ref "/posts/migrating-docker-compose-to-kubernetes-k3s/index.md" >}} "Migrating from Docker Compose to Kubernetes (K3s)") which got our [GitHub repo to here.](https://github.com/alexdarbyshire/alexdarbyshire.com/tree/e289cae54d452745e30cf733e06c0b3c569adaec)
 
 ## Example
 [Checkout the end result in GitHub](https://github.com/alexdarbyshire/alexdarbyshire.com/tree/5bb6d8bc540f5494610c00e6fa5ffd4203246dbf) 

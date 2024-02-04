@@ -41,7 +41,7 @@
                     </p>
                     {{ end }}
                     {{ if and (.Params.toc) (gt .WordCount .Site.Params.tocMinWordCount ) }}
-                    <h2>{{ i18n "tableOfContents" }}</h2>
+                    <h2>Overview</h2>
                     {{ .TableOfContents }}
                     {{ end }}
 
