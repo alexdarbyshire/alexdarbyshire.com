@@ -53,7 +53,7 @@ It goes into more detail about what the steps prior to Terraform are doing.
 
 ### Install Helm 
 #### Install Helm and jq
-```shell
+```bash
 sudo snap install helm --classic
 sudo apt install jq
 ```
@@ -65,7 +65,7 @@ jq is a small command line tool for parsing JSON in shells, we use it later with
 We need to let Helm know where to find the kube config file. 
 
 We could do this for the session only, or a specific user, or all users. Here we have gone for setting it system-wide.
-```shell
+```bash
 echo "KUBECONFIG=/etc/rancher/k3s/k3s.yaml" | sudo tee -a /etc/environment
 echo /etc/environment
 ```
@@ -79,7 +79,7 @@ Note we used piped the stdout of the `echo` command to `sudo tee` instead of the
 This method exports a copy of the kube config to the users home directory and adds the KUBECONFIG environment variable for the user. 
 
 This way `sudo` is no longer needed to run `kubectl` as it no longer needs access to `/etc/rancher/k3s/k3s.yaml`.
-```shell
+```bash
 mkdir ~/kube
 sudo k3s kubectl config view --raw > ~/.kube/config
 chmod 600 ~/.kube/config
@@ -89,7 +89,7 @@ echo "export KUBECONFIG=~/.kube/config" >> ~/.profile
 
 ### Setup Vault and Consul
 #### Add and Update Hashicorp Helm Repository
-```shell
+```bash
 sudo helm repo add hashicorp https://helm.releases.hashicorp.com
 sudo helm repo update
 ```
@@ -121,14 +121,14 @@ server:
 ```
 
 #### Install Consul and Vault
-```shell
+```bash
 sudo helm install consul hashicorp/consul --values deploy/helm-consul-values.yaml
 sudo helm install vault hashicorp/vault --values deploy/helm-vault-values.yaml
 ```
 ![Install Consul and Vault](4-install-consul-and-vault.png)
 
 #### Check the Pods
-```shell
+```bash
 sudo k3s kubectl get pods
 ```
 ![Check Vault and Consul Pods](5-check-vault-and-consul-pods.png)
@@ -136,7 +136,7 @@ sudo k3s kubectl get pods
 We can see our Vault pods aren't ready.
 
 Execute a command in one of the Vault pods to get Vault's status
-```shell
+```bash
 sudo k3s kubectl exec vault-0 -- vault status
 ```
 ![Check Vault Status in Pod](6-check-vault-status-in-running-pod.png)
@@ -146,7 +146,7 @@ We need to initialise and unseal the Vault.
 #### Initialise Vault and Generate Unseal Keys
 We'll set the number of keys generated and the number of keys required to unseal to 2 and output those keys to a JSON file.
 
-```shell
+```bash
 sudo k3s kubectl exec vault-0 -- vault operator init -key-shares=2 -key-threshold=2 -format=json > cluster-keys.json
 ```
 Here is what the outputted file looks like:
@@ -159,7 +159,7 @@ We want to read the keys out of the JSON and pass them to Vault. We could do som
 This would keep the keys out of our bash history, it could expose keys to other users on the host who are monitoring processes.
 
 Instead we'll use xargs to positionally apply the piped out of jq. Note to self, come back and refactor this.
-```shell
+```bash
 jq -r '.unseal_keys_b64[0]' cluster-keys.json | xargs -I {}  sudo k3s kubectl exec vault-0 -- vault operator unseal "{}"
 jq -r '.unseal_keys_b64[1]' cluster-keys.json | xargs -I {}  sudo k3s kubectl exec vault-0 -- vault operator unseal "{}"
 jq -r '.unseal_keys_b64[0]' cluster-keys.json | xargs -I {}  sudo k3s kubectl exec vault-1 -- vault operator unseal "{}"
@@ -184,7 +184,7 @@ On reflection, we may as well get started with Terraform now.
 
 #### Install Terraform
 Add the package repositories key, and use the apt package manager to install Terraform.
-```shell
+```bash
 wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 sudo apt update && sudo apt install terraform
@@ -216,7 +216,7 @@ Set the resulting address as the standard `VAULT_ADDR` environment variable, set
 
 Then initialise the Terraform with the Vault provider, and apply the config.
 
-```shell
+```bash
 export VAULT_ADDR="http://127.0.0.1:8200"
 export VAULT_TOKEN=insert_the_root_token_we_got_from_cluster-keys.json
 terraform init
@@ -231,7 +231,7 @@ terraform apply
 #### Add Cloudflared Token to Vault
 We still do this step manually as we don't want to add credentials to the Terraform files.
 
-```shell
+```bash
 sudo k3s kubectl exec --stdin=true --tty=true vault-0 -- /bin/sh
 vault login
 vault kv put secret/cloudflared/tunnel token="insert_cloudflared_tunnel_token"
@@ -260,7 +260,7 @@ Will use method 3 for now. In a future post we might look at using the Cloudflar
 
 #### Move Helm config files
 These are mixed up with our Kubernetes files, moving them to their own directory will make life easier.
-```shell
+```bash
 mkdir helm
 mv helm-* helm/
 ```
@@ -336,7 +336,7 @@ type: kubernetes.io/service-account-token
 ```
 
 Apply the new manifests
-```shell
+```bash
 sudo k3s kubectl apply -f vault-auth-service-account.yaml,vault-auth-secret.yaml
 ````
 
@@ -492,7 +492,7 @@ sudo k3s kubectl logs -f *name_of_pod*
 Success!
 
 ### Cleanup
-```shell
+```bash
 rm secrets.yaml
 rm secrets.yaml.example
 ```

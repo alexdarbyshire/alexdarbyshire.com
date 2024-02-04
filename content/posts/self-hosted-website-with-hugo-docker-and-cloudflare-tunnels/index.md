@@ -81,7 +81,7 @@ The following command examples are run in Ubuntu VM's bash shell.
 
 
 #### Update the package repository lists and install hugo and git
-```
+```bash
 sudo apt update
 sudo apt install hugo git
 ```
@@ -94,7 +94,7 @@ Select a directory name for your new site, in the example below it is `alexdarby
 
 
 #### Create the site and initiate a git repository
-```
+```bash
 cd ~
 hugo new site alexdarbyshire
 cd alexdarbyshire
@@ -106,7 +106,7 @@ git init
 #### Install a theme
 Here we use the [Hugo Universal Theme](https://github.com/devcows/hugo-universal-theme), the below commands are from their docs
 
-```
+```bash
 cd themes
 git clone https://github.com/devcows/hugo-universal-theme
 cd ..
@@ -115,14 +115,14 @@ cd ..
 
 Optional - remove git from the theme allowing us to customise it without forking. There are other options here (submodules etc)
 
-```
+```bash
 rm -rf themes/hugo-universal-theme/.git
 ```
 
 #### Set the theme
 Now we want to set the theme in the config.toml, we'll do this by appending to the end of this file rather than firing up a text editor
 
-```
+```bash
 echo "theme = 'hugo-universal-theme'" >> config.toml
 ```
 ![image](4-set-theme.png)
@@ -130,7 +130,7 @@ echo "theme = 'hugo-universal-theme'" >> config.toml
 
 #### Test the site
 Let's run the hugo server to see how we went. 
-```
+```bash
 hugo server --bind 0.0.0.0
 ```
 The `--bind 0.0.0.0` means any IP (that can reach the host) will be able to access the content.
@@ -158,7 +158,7 @@ Create a file called `Dockerfile` in the website directory using you preferred t
 The Dockerfile is the definition for the image we will build, it is sourced from the [Docker mods documentation](https://hugomods.com/docs/docker/#create-dockerfile) and modified.
 
 The contents of the Dockerfile:
-```
+```yaml
 ###############
 # Build Stage #
 ###############
@@ -185,20 +185,20 @@ This Dockerfile defines a multi-stage build process, first a container with Hugo
 
 #### Build the Docker image
 Build using the following command, note to update the build argument for HUGO_BASEURL to be your domain name. In the command, the `-t homelab/alexdarbyshire-site:latest -t homelab/alexdarbyshire-site:1` tags the image that is built with the namespace `homelab` the name `alexdarbyshire-site` and specifies version 1 as well as it being the latest version. In subsequent builds we would up the version number.
-```
+```bash
 docker build --build-arg HUGO_BASEURL="https://www.alexdarbyshire.com" --build-arg HUGO_ENV=production -t homelab/alexdarbyshire-site:latest .
 ```
 ![image](8-build-the-image.png)
 ![image](9-build-the-image2.png)
 #### Test the image
-```
+```bash
 docker run -p 8081:80 --name test-hugo homelab/alexdarbyshire-site:latest
 curl localhost:8081
 ```
 ![image](10-test-the-image.png)
 
 #### Stop and remove the image
-```
+```bash
 docker stop test-hugo
 docker rm test-hugo
 ```
@@ -247,7 +247,7 @@ In the web directory folder. The service name of 'nginx-hugo' is important, it n
 If you are unfamiliar with YAML files, the indentation requirements are strict. Incorrect indentation will result in errors.
 
 The contents of the docker-compose.yml file:
-```
+```yaml
 version: "3"
 services:
   nginx-hugo:
@@ -271,19 +271,19 @@ Create the file using you preferred text editor.
 Make sure to replace `insert_token_here` with the token from the Docker run command we noted when we created the tunnel, it was the long sequence of numbers are letters that follow `-token`
 
 Contents of .env
-```
+```dotenv
 CLOUDFLARE_TUNNEL_TOKEN=insert_token_here
 ```
 
 #### Create a .gitignore file 
 We will add two lines to prevent creds being added to repository, as well as the static website content
-```
+```bash
 echo ".env" >> .gitignore
 echo "public/" >> .gitignore
 ```
 
 #### Bring up the stack
-```
+```bash
 docker compose up -d
 ```
 ![image](21-bring-up-the-stack.png)
@@ -300,13 +300,13 @@ The above shows our end result, a self-hosted website accessed using a top-level
 
 If you need to debug the containers, use the following command to see the logs:
 e.g. for the nginx-hugo container
-```
+```bash
 docker logs nginx-hugo 
 ```
 
 #### Future builds
 Now, any time the site is updated we can build a new version of the image and bring the docker stack up and down
-```
+```bash
 docker build --build-arg HUGO_BASEURL="https://www.alexdarbyshire.com" --build-arg HUGO_ENV=production -t homelab/alexdarbyshire-site:latest .
 docker compose down
 docker compose up -d
@@ -314,7 +314,7 @@ docker compose up -d
 
 #### Make a commit
 You may want to commit your code to the local repo now.
-```
+```bash
 git add .
 git commit -m "Install and setup theme, create Dockerfile and docker-compose.yml for deploying site"
 ```

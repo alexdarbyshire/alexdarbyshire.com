@@ -201,7 +201,7 @@ See [values.yaml](https://github.com/actions/actions-runner-controller/blob/mast
 
 
 #### Add GitHub Token to Kubernetes Secrets
-```shell
+```bash
 kubectl create secret generic github-alexdarbyshire-com-pat --namespace="arc-runners" --from-literal=github_token='ghp_your_pat_here'
 ```
 ![Add Personal Access Token to Kubernetes Secrets](5-add-pat-as-kubernetes-secret.png)
@@ -210,7 +210,7 @@ Note the controller looks for the secret in the `arc-runners` namespace with our
 #### Install ARC Charts
 
 Install the ARC Controller with this command:
-```shell
+```bash
 namespace=""
 helm install arc \
     --namespace "${namespace}" \
@@ -220,7 +220,7 @@ helm install arc \
 ![Install Arc Helm Chart](6-install-arc-chart.png)
 
 Then install the ARC Runner Set:
-```shell
+```bash
 INSTALLATION_NAME="arc-runner-set"
 NAMESPACE=""
 helm install "${INSTALLATION_NAME}" \
@@ -231,7 +231,7 @@ oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set \
 ```
 ![Install ARC Runner Set Helm Chart](7-install-arc-runner-set-chart.png)
 #### Check ARC Pods are up
-```shell
+```bash
 kubectl get pods
 ```
 ![Check ARC pods are up](8-check-arc-pods-are-up.png)
@@ -243,7 +243,7 @@ Not up? Check the ARC controller logs. `kubectl logs ...` where ... is the name 
 ### Define and Deploy the Pipeline
 
 Create a directory in the repo which GitHub expects workflow definitions to be located in:
-```shell
+```bash
 mkdir -p .github/workflows
 ```
 ![Create GitHub Workflow Directory](9-create-github-workflow-directory.png)
@@ -319,7 +319,7 @@ The jobs within collectively:
 #### Add, Commit, and Push the Code
 First, check what we will be adding/staging with `git status`
 
-```shell
+```bash
 git add .
 git commit -m 'Add ARC GitHub Runner and website deploy workflow'
 git push
