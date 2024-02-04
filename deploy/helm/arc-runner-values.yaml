@@ -1,0 +1,63 @@
+## githubConfigUrl is the GitHub url for where you want to configure runners
+## ex: https://github.com/myorg/myrepo or https://github.com/myorg
+githubConfigUrl: "https://github.com/alexdarbyshire/alexdarbyshire.com/"
+
+## githubConfigSecret is the k8s secrets to use when auth with GitHub API.
+githubConfigSecret: github-alexdarbyshire-com-pat
+##   For a pre-defined secret using GitHub PAT, the secret needs to be created like this:
+##   > kubectl create secret generic github-alexdarbyshire-com-pat --namespace=my_namespace --from-literal=github_token='ghp_your_pat'
+
+## maxRunners is the max number of runners the autoscaling runner set will scale up to.
+#maxRunners: 2 
+
+## template is the PodSpec for each runner Pod
+## For reference: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#PodSpec
+template:
+  spec:
+     serviceAccountName: rollout-auth #Here we add our service account
+     initContainers:
+     - name: init-dind-externals
+       image: ghcr.io/actions/actions-runner:latest
+       command: ["cp", "-r", "-v", "/home/runner/externals/.", "/home/runner/tmpDir/"]
+       volumeMounts:
+         - name: dind-externals
+           mountPath: /home/runner/tmpDir
+     containers:
+     - name: runner
+       image: ghcr.io/actions/actions-runner:latest
+       command: ["/home/runner/run.sh"]
+       env:
+         - name: DOCKER_HOST
+           value: unix:///run/docker/docker.sock
+       volumeMounts:
+         - name: work
+           mountPath: /home/runner/_work
+         - name: dind-sock
+           mountPath: /run/docker
+           readOnly: true
+     - name: dind
+       image: docker:dind
+       args:
+         - dockerd
+         - --host=unix:///run/docker/docker.sock
+         - --group=$(DOCKER_GROUP_GID)
+       env:
+         - name: DOCKER_GROUP_GID
+           value: "123"
+       securityContext:
+         privileged: true
+       volumeMounts:
+         - name: work
+           mountPath: /home/runner/_work
+         - name: dind-sock
+           mountPath: /run/docker
+         - name: dind-externals
+           mountPath: /home/runner/externals
+     volumes:
+     - name: work
+       emptyDir: {}
+     - name: dind-sock
+       emptyDir: {}
+     - name: dind-externals
+       emptyDir: {}
+

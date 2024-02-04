@@ -1,0 +1,57 @@
+name: Build-and-Deploy-Image
+run-name: ${{ github.actor }} is updating alexdarbyshire.com
+on:
+  push:
+    branches:
+      - main
+env:
+  IMAGE_TAG: ${{ github.sha }}
+  IMAGE_NAME: "alexdarbyshire-site"
+
+jobs:
+  Build-and-Push:
+    runs-on: arc-runner-set3
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          repository: 'alexdarbyshire/alexdarbyshire.com'
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          config-inline: |
+            [registry."registry:5000"]
+              http = true
+              insecure = true
+
+      - name: Build and push to local registry
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: registry:5000/alexdarbyshire-site:${{ github.sha }},registry:5000/alexdarbyshire-site:latest
+
+      - name: Inspect
+        run: |
+          docker buildx imagetools inspect registry:5000/$IMAGE_NAME:$IMAGE_TAG
+
+  Patch-Deployment-Image:
+    runs-on: arc-runner-set3
+    steps:
+      - name: Install Kubectl
+        env:
+          KUBE_VERSION: "v1.29.1"
+        run: |
+          sudo apt update
+          sudo apt install -yq openssl curl ca-certificates
+          sudo curl -L https://storage.googleapis.com/kubernetes-release/release/$KUBE_VERSION/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl
+          sudo chmod +x /usr/local/bin/kubectl
+
+      - name: Update kubernetes deployment to image
+        run: |
+          kubectl patch deployment nginx-hugo-deployment -p \
+          '{"spec":{"template":{"spec":{"containers":[{"name":"nginx-hugo","image":"localhost:5000/alexdarbyshire-site:'$IMAGE_TAG'"}]}}}}'
