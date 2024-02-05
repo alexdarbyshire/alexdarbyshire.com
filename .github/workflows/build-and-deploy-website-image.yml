@@ -57,6 +57,10 @@ jobs:
           sudo curl -L https://storage.googleapis.com/kubernetes-release/release/$KUBE_VERSION/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl
           sudo chmod +x /usr/local/bin/kubectl
 
+      - name: Check Vault is unsealed
+        run: |
+          [[ $(curl -s http://vault.default.svc.cluster.local:8200/v1/sys/seal-status | jq .sealed) == 'false' ]]
+
       - name: Update kubernetes deployment to image
         run: |
           kubectl patch deployment nginx-hugo-deployment -p \
