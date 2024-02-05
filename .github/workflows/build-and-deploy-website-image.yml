@@ -53,7 +53,7 @@ jobs:
           KUBE_VERSION: "v1.29.1"
         run: |
           sudo apt update
-          sudo apt install -yq openssl curl ca-certificates
+          sudo apt install -yq openssl curl ca-certificates jq
           sudo curl -L https://storage.googleapis.com/kubernetes-release/release/$KUBE_VERSION/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl
           sudo chmod +x /usr/local/bin/kubectl
 
