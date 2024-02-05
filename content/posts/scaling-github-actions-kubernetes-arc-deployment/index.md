@@ -296,6 +296,7 @@ jobs:
 
   Patch-Deployment-Image:
     runs-on: arc-runner-set
+    needs: Build-and-Push
     steps:
       - name: Install Kubectl
         env:
