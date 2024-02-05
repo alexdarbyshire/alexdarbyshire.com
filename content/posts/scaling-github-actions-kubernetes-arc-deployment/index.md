@@ -239,9 +239,7 @@ kubectl get pods
 
 Not up? Check the ARC controller logs. `kubectl logs ...` where ... is the name of the controller pod. Note, if using namespaces and the controller doesn't have succificient permissions to the Kubernetes API there may not be logs events associated with the runner set not coming up (controller may not be able to 'see' the runner set).
 
-### Connect ARC to GitHub
-
-### Define and Deploy the Pipeline
+### Define and Deploy the Workflow
 
 Create a directory in the repo where GitHub reads workflow definitions from:
 ```bash
@@ -260,6 +258,7 @@ on:
 env:
   IMAGE_TAG: ${{ github.sha }}
   IMAGE_NAME: "alexdarbyshire-site"
+  BASE_URL: "https://www.alexdarbyshire.com"
 
 jobs:
   Build-and-Push:
@@ -285,6 +284,9 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          build-args: |
+            HUGO_ENV=production
+            HUGO_BASEURL=${{ env.BASE_URL }}
           push: true
           tags: registry:5000/alexdarbyshire-site:${{ github.sha }},registry:5000/alexdarbyshire-site:latest
 

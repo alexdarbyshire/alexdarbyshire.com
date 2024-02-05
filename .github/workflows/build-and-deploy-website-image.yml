@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - fix-build-args
 env:
   IMAGE_TAG: ${{ github.sha }}
   IMAGE_NAME: "alexdarbyshire-site"
+  BASE_URL: "https://www.alexdarbyshire.com"
 
 jobs:
   Build-and-Push:
@@ -33,6 +35,9 @@ jobs:
         with:
           context: .
           push: true
+          build-args: |
+            HUGO_ENV=production
+            HUGO_BASEURL=${{ env.BASE_URL }}
           tags: registry:5000/alexdarbyshire-site:${{ github.sha }},registry:5000/alexdarbyshire-site:latest
 
       - name: Inspect
