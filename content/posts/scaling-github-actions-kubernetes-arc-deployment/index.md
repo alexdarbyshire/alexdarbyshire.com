@@ -269,6 +269,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: 'alexdarbyshire/alexdarbyshire.com'
+          submodules: recursive
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3

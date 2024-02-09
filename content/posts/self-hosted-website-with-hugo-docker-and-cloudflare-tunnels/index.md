@@ -111,6 +111,10 @@ cd themes
 git clone https://github.com/devcows/hugo-universal-theme
 cd ..
 ```
+
+*Update February 2024 - Better to add the theme repo as a submodule. A submodule is easier for a GitHub actions workflow. Replace the clone with
+`git submodule add https://github.com/devcows/hugo-universal-theme`*
+
 ![Install Hugo Universal Theme](3-install-theme.png)
 
 #### Set the theme
