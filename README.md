@@ -29,6 +29,7 @@ Configure Vault
 Bring up rest of the resources in deploy
 `sudo k3s kubectl apply -f deploy/.`
 
+TODO: Update readme, several steps in contained posts are not documented here yet
 
 
 
