@@ -46,7 +46,7 @@ We will go with a `hot debrief` which is performed immediately after a critical 
 - It is not impromptu Scrum meeting where stories are re-prioritised
 - Document the result, it will feed into subsequent processes including the `cold debrief`
 
-Key to the `hot debrief` is not having time to replay what happened in our heads multiple times. We are less likely to have become defensive or have started playing the blame game, and the fickleness and mutable nature of memory is at its least pronounced.
+Key to the `hot debrief` is not having time to replay what happened in our heads multiple times. We are less likely to have become defensive or started playing the blame game, and the fickleness and mutable nature of memory is at its least pronounced.
 
 ### Our Example
 This site recently had unplanned downtime.
@@ -88,7 +88,7 @@ The patch was unsuccessful in bringing up the new pods as the Vault sidecar for 
 
 The outage was discovered approximately 50 minutes later when trying to access the website.
 
-##### How can we stop this happening again?
+#### How can we stop this happening again?
 
 Here we brainstorm potential approaches to prevent recurrence. At this stage we will not give thought to the expense of a solution.
 
@@ -97,7 +97,7 @@ Here we brainstorm potential approaches to prevent recurrence. At this stage we 
 - Adjust Proxmox backup settings
     - Opt-in to backups for new VMs, or
     - Set default backup to use suspend method, and explicitly set which machines need full stop backup
-- Using NVidia vGPU architecture instead of hardware passthrough which should allow for suspend type backups (hardware passthrough is largely a hangover from when the machine was used for now retired workloads)
+- Using Nvidia vGPU architecture instead of hardware passthrough which should allow for suspend type backups (hardware passthrough is largely a hangover from when the machine was used for now retired workloads)
 - Add check to pipeline confirming Vault is unsealed before patching deployments which rely on it
 - Create alerts which get sent to a human
     - Vault being sealed
@@ -108,7 +108,7 @@ Here we brainstorm potential approaches to prevent recurrence. At this stage we 
 - Add redundancy by deploying Nginx and Cloudflared container to a cloud provider
 
 #### Low Expense to Impact Improvements
-- Add check to pipeline confirming Vault is unsealed before patching deployments which rely on it. The highlighted line were updated in file `.github/workflows/build-and-deploy-website-image.yaml`
+- Add check to pipeline confirming Vault is unsealed before patching deployments which rely on it. The highlighted lines were added to file `.github/workflows/build-and-deploy-website-image.yaml`
 ```yaml {hl_lines=["14-16"]}
 Patch-Deployment-Image:  
   runs-on: arc-runner-set  
@@ -145,4 +145,4 @@ The nature of the service will govern whether there is an acceptable level of do
 In some contexts, there is virtually no acceptable level and massive resources may be assigned. For example, consider nuclear power plant, rail and civil aviation safety. These ideas can be transferred into the tech space when we think about technology services which are responsible for supporting human life both directly and indirectly.
 
 ## Done
-We have a decent list of new `todos` and have defined a process around post event management of unplanned service interruptions.
+We have a decent list of new `TODOs` and have defined a process around post event management of unplanned service interruptions.
