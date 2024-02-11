@@ -85,6 +85,8 @@ spec:
     metadata:
       labels:
         app: nginx-hugo
+      annotations:
+        fluentbit.io/parser: nginx-with-forwarded-for
     spec:
       containers:
       - image: localhost:5000/alexdarbyshire-site:latest

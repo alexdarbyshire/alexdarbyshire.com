@@ -1,0 +1,26 @@
+# https://github.com/datalust/helm.datalust.co/blob/main/charts/seq/values.yaml
+# Accept events in the GELF format and forward them to Seq
+gelf:
+  enabled: true
+
+## Configure probe values
+livenessProbe:
+  enabled: true
+  failureThreshold: 3
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 1
+
+readinessProbe:
+  enabled: true
+  failureThreshold: 3
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 1
+
+startupProbe:
+  enabled: true
+  failureThreshold: 30
+  periodSeconds: 10
