@@ -9,7 +9,7 @@ tags:
   - Kubernetes
 ---
 
-This post delves into how to get from Kubernetes logs in a terminal to using structured log data for searching, visualising and setting alerts within a web based user interface. We will use our Nginx deployment to demonstrate.
+Let's progress from checking Kubernetes logs in a terminal to using structured log data for searching, visualising and setting alerts within a web based user interface. We will use our Nginx deployment to demonstrate.
 
 Structured logging involves defining shapes for log data, most often represented in JSON using key value pairs.
 
@@ -40,14 +40,14 @@ In the context of Kubernetes and this example site, we can use Seq to monitor:
 
 Note, Seq is not open-source and requires a subscription when the UI is used by more than one person. This business model works well enough for us as it enables homelabs to use it and devs to play around to see how it compares with other tools filling the same niche.
 
-For an open-source alternative, checkout Elasticsearch has the largest market share at time of writing. Elasticsearch has many other functions and has a bit of a steeper learning curve as a result.
+For an open-source alternative, checkout Elasticsearch has the largest market share at time of writing. Elasticsearch has many other functions and a bit of a steeper learning curve as a result.
 
 
 ## What is Fluent Bit?
 
 Fluent Bit reads and parses log files and then sends the data to a specified destination using one or more of many available protocols. Familiar with Logstash? Fluent Bit does a similar job.
 
-Fluent Bit can be deployed to Kubernetes as a DaemonSet and then individual parsers may specified on a deployment or pod basis using annotations. A DaemonSet being a Kubernetes resource which ensures a pod is running on each node in the cluster.
+Fluent Bit can be deployed to Kubernetes as a DaemonSet and then individual parsers may be specified on a deployment or pod basis using annotations. A DaemonSet being a Kubernetes resource which ensures a pod is running on each node in the cluster.
 
 
 ## Example
@@ -111,7 +111,9 @@ startupProbe:
   failureThreshold: 30
   periodSeconds: 10
 ```
-By default, Seq will provision a 8GB PersistentVolumeClaim using the default provider for storing log data. See their [values.yaml example file](https://github.com/datalust/helm.datalust.co/blob/main/charts/seq/values.yaml) for further details.
+By default, Seq will provision a 8GB PersistentVolumeClaim using the default provider for storing log data. 
+
+See their [values.yaml example file](https://github.com/datalust/helm.datalust.co/blob/main/charts/seq/values.yaml) for further details.
 
 #### Define a Service for Seq
 To allow us to access Seq's UI via an exposed port on the node.
@@ -153,12 +155,15 @@ kubectl apply -f deploy/seq-service.yaml
 
 #### Configure Fluent Bit's Helm Values File
 Add contents to file `deploy/helm/fluent-bit-values.yaml`
-See contents here *INSERT LINK* -
 
-##### How to setup a Fluent Bit Regex Nginx parser to capture IP for proxied requests
-We create a custom parser to pickup the `http_x_forwarded_for` IP which Fluent Bit's baked Nginx parser does not include.
+[See contents in GitHub](https://github.com/alexdarbyshire/alexdarbyshire.com/blob/implement-seq-and-fluent-bit/deploy/helm/fluent-bit-values.yaml) 
 
-Note, this customer parser is already included in the `fluent-bit-values.yaml` file linked above.
+Notably, we configure GELF Output, a custom Nginx parser, add Seq's internal cluster hostname and disable `Keep_Log Off` wtihin the kubernetes filter.
+
+##### How to set up a Fluent Bit Regex Nginx parser to capture IP for proxied requests
+We create a custom parser to pick up the `http_x_forwarded_for` IP which Fluent Bit's baked Nginx parser does not include.
+
+Note, this parser is included in the `fluent-bit-values.yaml` file linked above.
 
 A custom parser is required in our setup as the `remote` IP will always be our Cloudflared pod which is forwarding requests received at the other end of the tunnel.
 
@@ -175,7 +180,7 @@ The parser uses a Regular Expression and looks like this:
 Were we not using Helm to deploy, it would be added to a Kubernetes ConfigMap (which Helm does under the hood).
 
 The parser relies on Nginx using its default 'out-of-the-box' log format which is defined within one of the Nginx image's internal conf files, `/etc/nginx/nginx.conf`. Here is an excerpt for reference:
-```
+```nginx configuration
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
@@ -191,7 +196,8 @@ helm upgrade --install --values deploy/helm/fluent-bit-values.yaml fluent-bit fl
 
 ![Install Fluent Bit using Helm](3-install-fluent-bit-using-helm.png)
 
-*Screenshot above shows output when Fluent Bit was already installed, it is very similar to the fresh install output and commands used remain the same*
+*Screenshot above shows output when Fluent Bit was already installed, it is very similar to the fresh install's output and the commands used remain the same*
+
 #### Update Nginx Deployment Manifest to use Custom Fluent Bit Parser
 To do this, we add an annotation to our Nginx's deployments pod template which is in `deploy/hugo-cloudflared.yaml`
 
