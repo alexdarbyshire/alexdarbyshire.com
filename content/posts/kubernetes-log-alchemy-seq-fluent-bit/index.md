@@ -52,7 +52,7 @@ Fluent Bit can be deployed to Kubernetes as a DaemonSet and then individual pars
 
 ## Example
 
-Checkout the end result in GitHub **INSERT LINK**
+[Checkout the end result in GitHub](https://github.com/alexdarbyshire/alexdarbyshire.com/tree/d3304b50f4cad2fff15066aad6a169b3c5e619d3)
 
 
 ![Seq Dashboard for alexdarbyshire.com](1-seq-dashboard-alexdarbyshire-com.png)
@@ -156,7 +156,7 @@ kubectl apply -f deploy/seq-service.yaml
 #### Configure Fluent Bit's Helm Values File
 Add contents to file `deploy/helm/fluent-bit-values.yaml`
 
-[See contents in GitHub](https://github.com/alexdarbyshire/alexdarbyshire.com/blob/implement-seq-and-fluent-bit/deploy/helm/fluent-bit-values.yaml) 
+[See contents in GitHub](https://github.com/alexdarbyshire/alexdarbyshire.com/blob/d3304b50f4cad2fff15066aad6a169b3c5e619d3/deploy/helm/fluent-bit-values.yaml) 
 
 Notably, we configure GELF Output, a custom Nginx parser, add Seq's internal cluster hostname and disable `Keep_Log Off` wtihin the kubernetes filter.
 
