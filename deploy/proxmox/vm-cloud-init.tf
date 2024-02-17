@@ -3,7 +3,7 @@
 resource "proxmox_virtual_environment_file" "cloud_config" {
   content_type = "snippets"
   datastore_id = var.virtual_environment.storage_nas 
-  node_name    = "agri"
+  node_name    = var.virtual_environment.node_name
 
   source_raw {
     data = <<EOF

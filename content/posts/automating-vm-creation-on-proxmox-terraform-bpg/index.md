@@ -20,7 +20,7 @@ bpg is one of two terraform providers available for Proxmox at time of writing, 
 The intended future use case of the VMs is a Kubernetes cluster. We will take an iterative approach to creating the VMs. The number of VMs to create will be configured as a variable, allowing us to set the quantity required at runtime (of `terraform apply`). 
 
 ## Example
-Checkout the end result in GitHub **ADD LINK HERE**
+[Checkout the end result in GitHub](https://github.com/alexdarbyshire/alexdarbyshire.com/tree/704f2dbba3b9bf8d16ab8d449b3633a506b5883e/deploy/proxmox) 
 
 ![Proxmox Showing Several VMs Created Using Terraform and bpg/proxmox](1-proxmox-showing-vms.png)
 
@@ -64,7 +64,9 @@ provider "proxmox" {
 ```
 Within the provider we set several configuration arguments to variables.
 
-Initially tried using a Proxmox API token, there is a bit less friction using username and password. The tokens require more setup in terms of permissions. Also, the bpg documentation mentioned there were a few Proxmox API features are not usable with a token.
+Initially tried using a Proxmox API token, there is a bit less friction using username and password. The tokens require more setup in terms of permissions. Also, the bpg documentation mentioned there were a few Proxmox API features which are not usable with a token. 
+
+In a non-test environment, we would create a non-root user with their own API tokens. This would make revoking access much less hassle. 
 #### Add the Virtual Machine Resources
 Create file `vms.tf` with contents:
 ```terraform
@@ -142,7 +144,7 @@ Create file `vm-cloud-int.tf` with the following contents:
 resource "proxmox_virtual_environment_file" "cloud_config" {
   content_type = "snippets"
   datastore_id = var.virtual_environment.storage_nas
-  node_name    = "agri"
+  node_name    = var.virtual_environment.node_name
 
   source_raw {
     data = <<EOF
