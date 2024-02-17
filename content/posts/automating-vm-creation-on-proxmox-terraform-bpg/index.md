@@ -20,7 +20,7 @@ bpg is one of two terraform providers available for Proxmox at time of writing, 
 The intended future use case of the VMs is a Kubernetes cluster. We will take an iterative approach to creating the VMs. The number of VMs to create will be configured as a variable, allowing us to set the quantity required at runtime (of `terraform apply`). 
 
 ## Example
-Checkout the end result in GitHub **ADD LINK HERE**
+[Checkout the end result in GitHub](https://github.com/alexdarbyshire/alexdarbyshire.com/tree/704f2dbba3b9bf8d16ab8d449b3633a506b5883e/deploy/proxmox) 
 
 ![Proxmox Showing Several VMs Created Using Terraform and bpg/proxmox](1-proxmox-showing-vms.png)
 
