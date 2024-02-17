@@ -1,0 +1,9 @@
+virtual_environment = {
+  endpoint = "https://ip-or-hostname:8006/"
+  username = "root@pam"
+  password = "apasswordgoeshere"
+  node_name = "proxmox-node-name-goes-here"
+  storage_nas = "local"
+  storage_ssd = "local-lvm"
+  vm_count = 4
+}
