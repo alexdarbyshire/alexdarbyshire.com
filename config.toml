@@ -39,7 +39,7 @@ pluralizelisttitles = false
   showMenuItems = 2
   showLanguageSelector = false
   fullWidthTheme = false
-  centerTheme = false
+  centerTheme = true 
   autoCover = true
   showLastUpdated = false
   readingTime = true
@@ -79,7 +79,4 @@ pluralizelisttitles = false
     identifier = "menu.github"
     url        = "https://github.com/alexdarbyshire/alexdarbyshire.com"
     weight     = 3
-
-
-    subtitle = "A space for technology notes on anything I find interesting, and a musing or two. From electrons through to delivering and developing code, as well as shiny emerging tech."
 
