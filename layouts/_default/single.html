@@ -1,99 +1,54 @@
-<!DOCTYPE html>
-<html lang="{{ .Site.LanguageCode }}">
+{{ define "main" }}
+<article class="post">
+  <h1 class="post-title">
+    <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
+  </h1>
+  <div class="post-meta">
+    {{- if .Date -}}
+      <time class="post-date">
+        {{- partial "post-date" . -}}
+        {{- if and $.Site.Params.showLastUpdated .Lastmod -}}
+          &nbsp;{{- partial "post-lastmod" . -}}
+        {{- end -}}
+      </time>
+    {{- end -}}
+    {{- if and (.Param "readingTime") (eq (.Param "readingTime") true) -}}
+      <span class="post-reading-time">{{ .ReadingTime }} {{ $.Site.Params.minuteReadingTime | default "min read" }} ({{ .WordCount }} {{ $.Site.Params.words | default "words" }})</span>
+    {{- end -}}
+  </div>
 
-<head>
-    {{ partial "headers.html" . }}
-    {{ partial "custom_headers.html" . }}
-</head>
+  {{ if .Params.tags }}
+    <span class="post-tags">
+      {{ range .Params.tags }}
+      #<a href="{{ (urlize (printf "tags/%s/" .)) | absLangURL }}">{{ . }}</a>&nbsp;
+      {{ end }}
+    </span>
+  {{ end }}
+  {{ partial "cover.html" . }}
 
-<body>
-
-<div id="all">
-
-    {{ partial "top.html" . }}
-
-    {{ partial "nav.html" . }}
-
-    {{ partial "breadcrumbs.html" . }}
-
-    <div id="content">
-        <div class="container">
-
-            <div class="row">
-
-                <!-- *** LEFT COLUMN *** -->
-
-                <div class="col-md-9" id="blog-post">
-
-                    {{ if or .Params.author .Params.date }}
-                    <p class="text-muted text-uppercase mb-small text-right">
-                        {{ if isset .Params "authors" }}
-                        {{ i18n "authorBy" }} {{ range $index, $author := .Params.authors }}{{ if $index }}, {{ end }}<a href="{{ (printf "%s/%s" ("authors" | relLangURL) ($author | urlize)) }}">{{ $author }}</a>{{ end }}
-                        {{ end }}
-                        {{ if and .Params.author .Params.date }} | {{ end }}
-                        {{ if .Params.date }}
-                        {{ $createdAt := .Date.Format .Site.Params.date_format }}
-                        {{ range $index, $month := slice "January" "February" "March" "April" "May" "June" "July" "August" "September" "October" "November" "December" }}
-                        {{ $createdAt = replace $createdAt $month (i18n $month) }}
-                        {{ end }}
-                        {{ $createdAt }}
-                        {{ end }}
-                    </p>
-                    {{ end }}
-                    {{ if and (.Params.toc) (gt .WordCount .Site.Params.tocMinWordCount ) }}
-                    <h2>Overview</h2>
-                    {{ .TableOfContents }}
-                    {{ end }}
-
-                    <div id="post-content">
-                        {{ .Content }}
-                    </div>
-                    <!-- /#post-content -->
-                    {{ if site.Config.Services.Disqus.Shortname }}
-                    <div id="comments">
-                        {{ template "_internal/disqus.html" . }}
-                    </div>
-                    {{ end }}
-
-                </div>
-                <!-- /#blog-post -->
-
-                <!-- *** LEFT COLUMN END *** -->
-
-                <!-- *** RIGHT COLUMN *** -->
-
-                <div class="col-md-3">
-
-                    <!-- *** MENUS AND WIDGETS *** -->
-
-                    {{ partial "sidebar.html" . }}
-
-                    <!-- *** MENUS AND FILTERS END *** -->
-
-                </div>
-                <!-- /.col-md-3 -->
-
-                <!-- *** RIGHT COLUMN END *** -->
-
-            </div>
-            <!-- /.row -->
-
-        </div>
-        <!-- /.container -->
+  {{ if (.Params.Toc | default .Site.Params.Toc) }}
+    <div class="table-of-contents">
+      <h2>
+        {{ (.Params.TocTitle | default .Site.Params.TocTitle) | default "Table of Contents" }}
+      </h2>
+      {{ .TableOfContents }}
     </div>
-    <!-- /#content -->
+  {{ end }}
 
-    {{ partial "footer.html" . }}
+  <div class="post-content">
+    {{- with .Content -}}
+      <div>
+        {{ . | replaceRE "(<h[1-9] id=\"([^\"]+)\".+)(</h[1-9]+>)" `${1}<a href="#${2}" class="hanchor" ariaLabel="Anchor">#</a> ${3}` | safeHTML }}
+      </div>
+    {{- end -}}
+  </div>
 
-</div>
-<!-- /#all -->
+  {{ if eq .Type $.Site.Params.contentTypeName }}
+    {{ partial "posts_pagination.html" . }}
+  {{ end }}
 
-{{ partial "scripts.html" . }}
-
-
-{{ if (findRE "<pre" .Content 1) }}
-<script src="/js/copy-code-block-button.js"></script>
+  {{ if not (.Params.hideComments | default false) }}
+    {{ partial "comments.html" . }}
+  {{ end }}
+</article>
 {{ end }}
-
-</body>
-</html>

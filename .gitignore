@@ -1,3 +1,4 @@
 .env
 public/
 .idea/
+.hugo_build.lock
