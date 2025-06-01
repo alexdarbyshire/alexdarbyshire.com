@@ -1,0 +1,1 @@
+Deprecated - no longer using a theme which uses hero images
