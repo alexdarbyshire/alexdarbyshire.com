@@ -19,13 +19,17 @@ At the end of March 2024, my father died. May he rest in peace. With the process
 
 Then we moved house, and my Proxmox cluster turned back into a single node. I stayed up late one night and transitioned the site's K3s stack on to an Azure VM as an interim measure. Sometime later the K3s state on that VM lost integrity and there was another unplanned service interruption.
 
-Finally, yesterday I went with a much simpler approach - Azure Static Web Apps. It is free for personal use of up to 100GB of traffic per month. I have been using Azure of late at work, hence why it was chosen over the other available options like Github pages, Cloudflare's offering, and the many others.
+Finally, yesterday I went with a much simpler approach - Azure Static Web Apps. 
 
 ## Why Azure Static Web Apps?
 
-The process was straightforward. Created the resource in the Azure web interface, linked my Github account and the repo containing the Hugo code. Azure committed the necessary Github action workflow YAML to the repo. Then I created a custom domain for the Azure Static Web App and added a CNAME for 'www' with my DNS provider.
+It is free for personal use of up to 100GB of traffic per month. I have been using Azure of late at work, hence why it was chosen over the other available options like Github pages, Cloudflare's offering, and the many others.
 
-While I was at it I took the opportunity to update the Hugo theme to Terminal by Panr. The Diffusion generated Hero images I was using in the previous theme were getting a bit long in the tooth. I feel the novelty of generated images is largely lost.
+The process was straightforward. Created the resource in the Azure web interface, linked my Github account and the repo containing the Hugo code. Azure committed the necessary Github action workflow YAML to the repo. Then I created a custom domain for the Azure Static Web App and added a CNAME for `www` with my DNS provider.
+
+# Theme Update and All
+
+While I was at it I took the opportunity to update the Hugo theme to [Terminal by Panr](https://github.com/panr/hugo-theme-terminal). The Diffusion generated Hero images I was using in the previous theme were getting a bit long in the tooth. I feel the novelty of such images has been somewhat lost. In the seas of LLM generated text and Diffusion images I am finding an 'uncanny valley' effect striking all too regulary after clicking on some search result and getting part way through the first paragraph. 
 
 ## The New Plan
 
