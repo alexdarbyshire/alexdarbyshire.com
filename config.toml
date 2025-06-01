@@ -1,33 +1,23 @@
 baseURL = "https://www.alexdarbyshire.com"
 languageCode = "en-au"
 title = "Alex Darbyshire"
-theme = 'hugo-universal-theme'
+theme = 'terminal'
 
-# Site language. Available translations in the theme's `/i18n` directory.
-defaultContentLanguage = "en"
-
-# Enable comments by entering your Disqus shortname
-# disqusShortname = "alexdarbyshire" # deprecated format
+# Required for Chroma and custom syntax highlighting
+[markup.highlight]
+noClasses = false
 
 enableRobotsTXT = true
 
-# number of words of summarized post content (default 70)
-summaryLength = 40
-
 # Define pagination settings
 [pagination]
-  pagerSize = 10
+  pagerSize = 7 
 
 # not pluralize title pages by default
 pluralizelisttitles = false
 
-[markup]
-  [markup.tableOfContents]
-    startLevel = 3
-    endLevel = 3
-    ordered = false
 
-#Allow direct use of html and script in markdown (TODO: Be Hugo-onic and use shortcode instead)
+#Allow direct use of html and script in markdown
 [markup.goldmark.renderer]
   unsafe = true
 
@@ -39,25 +29,50 @@ pluralizelisttitles = false
     changefreq = "weekly"
     priority = 0.5
 
-# Enable Google Analytics by entering your tracking code
-[services]
-  [services.googleAnalytics]
-     id = 'G-C05H5792C7'
-  [services.disqus]
-     shortname = 'alexdarbyshire'
+[services.googleAnalytics]
+    id = 'G-C05H5792C7'
 
-#Main menu
-[[menu.main]]
-    name       = "Home"
-    identifier = "menu.home"
-    url        = "/"
-    weight     = 1
+[params]
+  copyright = "Copyright © 2025, Alex Darbyshire"
+  dateFormat = "January 2, 2006"
+  contentTypeName = "posts"
+  showMenuItems = 2
+  showLanguageSelector = false
+  fullWidthTheme = false
+  centerTheme = false
+  autoCover = true
+  showLastUpdated = false
+  readingTime = true
+  Toc = true 
+  # TocTitle = "Table of Contents"  # Uncomment to customize
+
+[params.logo]
+  logoText = "Alex Darbyshire"
+  logoHomeLink = "/"
+
+[languages]
+  [languages.en]
+    languageName = "English"
+    title = "Alex Darbyshire"
+    [languages.en.params]
+      subtitle = ""  # Add your subtitle here if desired
+      owner = "Alex Darbyshire"
+      keywords = ""  # Add your keywords here
+      menuMore = "Show more"
+      readMore = "Read more"
+      readOtherPosts = "Read other posts"
+      newerPosts = "Newer posts"
+      olderPosts = "Older posts"
+      missingContentMessage = "Page not found..."
+      missingBackButtonLabel = "Back to home page"
+      minuteReadingTime = "min read"
+      words = "words"
 
 [[menu.main]]
     name       = "Posts"
-    identifier = "menu.posts"
-    url        = "/posts/"
-    weight     = 2
+    identifier = "menu.home"
+    url        = "/"
+    weight     = 1
 
 [[menu.main]]
     name       = "Github"
@@ -65,41 +80,6 @@ pluralizelisttitles = false
     url        = "https://github.com/alexdarbyshire/alexdarbyshire.com"
     weight     = 3
 
-#[[menu.main]]
-#    name       = "Contact"
-#    identifier = "menu.contact"
-#    url        = "/contact/"
-#    weight     = 4
 
-[params]
-
-# Style options: default (light-blue), blue, green, marsala, pink, red, turquoise, violet
-style = "turquoise"
-
-#about_us = "" 
-copyright = "Copyright © 2024, Alex Darbyshire"
-
-# Format dates with Go's time formatting
-date_format = "January 2, 2006"
-
-dropdown_mouse_over = false
-
-disabled_logo = true
-logo_text = "Alex Darbyshire"
-#logo = "img/logo.png"
-#logo_small = "img/logo-small.png"
-
-[params.footer.recent_posts]
-    enable = false
-
-[params.recent_posts]
-    enable = true
-    title = "Welcome"
     subtitle = "A space for technology notes on anything I find interesting, and a musing or two. From electrons through to delivering and developing code, as well as shiny emerging tech."
-   hide_summary = false
 
-# Enable and disable widgets for the right sidebar
-[params.widgets]
-    categories = true
-    tags = true
-    search = true
