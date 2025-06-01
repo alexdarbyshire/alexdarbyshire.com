@@ -7,15 +7,16 @@ theme = 'hugo-universal-theme'
 defaultContentLanguage = "en"
 
 # Enable comments by entering your Disqus shortname
-disqusShortname = "alexdarbyshire"
+# disqusShortname = "alexdarbyshire" # deprecated format
 
 enableRobotsTXT = true
 
 # number of words of summarized post content (default 70)
 summaryLength = 40
 
-# Define the number of posts per page
-paginate = 10
+# Define pagination settings
+[pagination]
+  pagerSize = 10
 
 # not pluralize title pages by default
 pluralizelisttitles = false
@@ -42,6 +43,8 @@ pluralizelisttitles = false
 [services]
   [services.googleAnalytics]
      id = 'G-C05H5792C7'
+  [services.disqus]
+     shortname = 'alexdarbyshire'
 
 #Main menu
 [[menu.main]]
