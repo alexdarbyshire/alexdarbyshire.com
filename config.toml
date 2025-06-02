@@ -33,10 +33,9 @@ pluralizelisttitles = false
     id = 'G-C05H5792C7'
 
 [params]
-  copyright = "Copyright © 2025, Alex Darbyshire"
   dateFormat = "January 2, 2006"
   contentTypeName = "posts"
-  showMenuItems = 2
+  showMenuItems = 3
   showLanguageSelector = false
   fullWidthTheme = false
   centerTheme = true 
@@ -70,13 +69,18 @@ pluralizelisttitles = false
 
 [[menu.main]]
     name       = "Posts"
-    identifier = "menu.home"
-    url        = "/"
+    identifier = "menu.posts"
+    url        = "/posts"
     weight     = 1
 
 [[menu.main]]
     name       = "Github"
     identifier = "menu.github"
     url        = "https://github.com/alexdarbyshire/alexdarbyshire.com"
-    weight     = 3
+    weight     = 2
 
+[[menu.main]]
+    name       = "Linkedin"
+    identifier = "menu.Linkedin"
+    url        = "https://linkedin.com/in/alex-darbyshire-au"
+    weight     = 3

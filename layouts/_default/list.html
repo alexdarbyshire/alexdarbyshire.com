@@ -1,0 +1,26 @@
+{{ define "main" }}
+  {{ with .Content }}
+    <div class="index-content">
+      {{ . }}
+    </div>
+  {{ end }}
+  
+  <div class="posts">
+    {{ $pages := where .Site.RegularPages "Type" "posts" }}
+    {{ range $pages.GroupByDate "2006" "desc" }}
+      <h2 class="year-heading">{{ .Key }}</h2>
+      <div class="year-posts">
+        {{ range .Pages.GroupByDate "January" "desc" }}
+          <h3 class="month-heading">{{ .Key }}</h3>
+          <div class="month-posts">
+            {{ range .Pages }}
+              <div class="post-item">
+                <a href="{{ .Permalink }}" class="post-link">{{ .Title | markdownify }}</a>
+              </div>
+            {{ end }}
+          </div>
+        {{ end }}
+      </div>
+    {{ end }}
+  </div>
+{{ end }}

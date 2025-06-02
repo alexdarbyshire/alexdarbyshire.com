@@ -13,7 +13,7 @@ After well over a year without a post...
 
 ## Personal Update
 
-At the end of March 2024, my father died. May he rest in peace. With the process grieving taking its natural course, this site went well on the back-burner, or even off the stove entirely for a time.
+At the end of March 2024, my father died. May he rest in peace. With the process of grieving taking its natural course, this site went well on the back-burner, or even off the stove entirely for a time.
 
 ## The Migration Journey
 

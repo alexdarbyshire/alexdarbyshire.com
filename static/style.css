@@ -1,0 +1,39 @@
+/* Custom styles for posts listing */
+.year-heading {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 10px;
+}
+
+.year-posts {
+  margin-bottom: 30px;
+}
+
+.month-posts {
+  margin-bottom: 20px;
+}
+
+.post-item {
+  margin: 8px 0;
+  line-height: 1.5;
+  display: block;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-size: 0.9em;
+}
+
+.post-link {
+  color: var(--foreground);
+  text-decoration: none;
+}
+
+.post-link:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* Customise menu dropdown - no mid-word breaks  */
+.menu__dropdown {
+  min-width: max-content;
+}
+
