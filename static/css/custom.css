@@ -1,0 +1,45 @@
+/* Custom styles for posts listing */
+.year-heading {
+  color: var(--accent);
+  font-weight: 600;
+  margin: 40px 0 20px 0;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 10px;
+}
+
+.year-posts {
+  margin-bottom: 30px;
+}
+
+.month-heading {
+  color: color-mix(in srgb, var(--accent) 80%, var(--foreground));
+  font-weight: 500;
+  font-size: 1.1em;
+  margin: 25px 0 15px 0;
+  padding-left: 10px;
+  border-left: 3px solid var(--accent);
+}
+
+.month-posts {
+  margin-bottom: 20px;
+  margin-left: 15px;
+}
+
+.post-item {
+  margin: 8px 0;
+  line-height: 1.5;
+  display: block;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-size: 0.9em;
+}
+
+.post-link {
+  color: var(--foreground);
+  text-decoration: none;
+}
+
+.post-link:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}

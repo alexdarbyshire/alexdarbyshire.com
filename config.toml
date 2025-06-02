@@ -70,8 +70,8 @@ pluralizelisttitles = false
 
 [[menu.main]]
     name       = "Posts"
-    identifier = "menu.home"
-    url        = "/"
+    identifier = "menu.posts"
+    url        = "/posts"
     weight     = 1
 
 [[menu.main]]
