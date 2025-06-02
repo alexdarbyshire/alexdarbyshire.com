@@ -1,8 +1,6 @@
 /* Custom styles for posts listing */
 .year-heading {
   color: var(--accent);
-  font-weight: 600;
-  margin: 40px 0 20px 0;
   border-bottom: 2px solid var(--accent);
   padding-bottom: 10px;
 }
@@ -11,18 +9,8 @@
   margin-bottom: 30px;
 }
 
-.month-heading {
-  color: color-mix(in srgb, var(--accent) 80%, var(--foreground));
-  font-weight: 500;
-  font-size: 1.1em;
-  margin: 25px 0 15px 0;
-  padding-left: 10px;
-  border-left: 3px solid var(--accent);
-}
-
 .month-posts {
   margin-bottom: 20px;
-  margin-left: 15px;
 }
 
 .post-item {
@@ -43,3 +31,9 @@
   color: var(--accent);
   text-decoration: underline;
 }
+
+/* Customise menu dropdown - no mid-word breaks  */
+.menu__dropdown {
+  min-width: max-content;
+}
+

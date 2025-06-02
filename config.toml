@@ -35,7 +35,7 @@ pluralizelisttitles = false
 [params]
   dateFormat = "January 2, 2006"
   contentTypeName = "posts"
-  showMenuItems = 2
+  showMenuItems = 3
   showLanguageSelector = false
   fullWidthTheme = false
   centerTheme = true 
@@ -77,5 +77,10 @@ pluralizelisttitles = false
     name       = "Github"
     identifier = "menu.github"
     url        = "https://github.com/alexdarbyshire/alexdarbyshire.com"
-    weight     = 3
+    weight     = 2
 
+[[menu.main]]
+    name       = "Linkedin"
+    identifier = "menu.Linkedin"
+    url        = "https://linkedin.com/in/alex-darbyshire-au"
+    weight     = 3

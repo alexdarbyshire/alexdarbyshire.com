@@ -1,13 +1,8 @@
 {{ define "main" }}
-  {{ if .Content }}
-    <div class="index-content {{ if .Params.framed -}}framed{{- end -}}">
-      {{ .Content }}
-    </div>
-  {{ end }}
-  <div class="intro-text framed">
-    <p>A space for technology notes on anything I find interesting, and a musing or two. From electrons through to delivering and developing code, as well as shiny emerging tech.</p>
-  </div>
 
+  <div class="index-content framed">
+    A space for technology notes on anything I find interesting, and a musing or two. From electrons through to delivering and developing code, as well as shiny emerging tech.
+  </div>
   <div class="posts">
     {{ $isntDefault := not (or (eq (trim $.Site.Params.contentTypeName " ") "posts") (eq (trim $.Site.Params.contentTypeName " ") "")) }}
     {{ $contentTypeName := cond $isntDefault (string $.Site.Params.contentTypeName) "posts" }}
