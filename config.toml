@@ -33,7 +33,6 @@ pluralizelisttitles = false
     id = 'G-C05H5792C7'
 
 [params]
-  copyright = "Copyright © 2025, Alex Darbyshire"
   dateFormat = "January 2, 2006"
   contentTypeName = "posts"
   showMenuItems = 2
