@@ -15,15 +15,6 @@ Costs are indicative at time of writing. Costs vary between Azure regions. Figur
 
 I haven't considered use of Site to Site (S2S) VPNs to connect to existing Point to Site (P2S) VPNs here, if that connectivity is a requirement then these options are likely not relevant.
 
-## Quick Comparison
-
-| Option | Monthly Cost (AUD) | Setup Complexity | Cross-Platform | Maintenance | Best For |
-|--------|-------------------|-----------------|----------------|-------------|----------|
-| VM with Tailscale | $12+ | Medium | Yes | Low | Small teams on a budget with flexible tooling |
-| Basic VPN Gateway | $41 | Medium | Windows-only | Medium | Windows teams with budget considerations |
-| Bastion with SSH | $1-216 | Medium | Yes | Low | Occasional access needs |
-| VpnGw1 Gateway | $215 | Medium | Yes | Low | Enterprise teams requiring high reliability |
-
 ## Service-Level IP Whitelisting (ick)
 *Cost: AUD$0 per month*
 
