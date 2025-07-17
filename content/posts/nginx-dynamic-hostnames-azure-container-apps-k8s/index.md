@@ -12,7 +12,7 @@ tags:
   - Container Apps
 ---
 
-Nginx fails to start when upstream services aren't available at startup time, showing `host not found in upstream`. This post focuses on fixing this issue in Docker first, then extends the solution to Kubernetes and Azure Container Apps.
+Nginx fails to start when upstream services aren't available at startup time, showing `host not found in upstream`. This post focuses on fixing this issue in Docker first, then extends the solution to Kubernetes and Azure Container Apps using environment variables to construct dynamic hostnames (like `my-rg-${ENVIRONMENT}-api`) which adapt to different deployment environments.
 
 The error occurs because Nginx resolves all hostnames at startup, not request time. This fail-fast behaviour is reasonable in many environments, but problematic in container orchestration where services start in unpredictable order or may not always be available by design.
 
