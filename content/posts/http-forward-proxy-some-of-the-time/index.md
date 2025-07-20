@@ -16,7 +16,7 @@ tags:
 
 *And you may ask yourself, "How do I work this?"* - with a nod to the Talking Heads, whose "Once in a Lifetime" seems strangely appropriate when dealing with proxy configurations which work sometimes but not others.
 
-In Windows, a host of CLI tools commonly used in development don't inherit Windows proxy settings. Tools like [`curl`](https://curl.se/), [`wget`](https://www.gnu.org/software/wget/), [`npm`](https://www.npmjs.com/), [`pip`](https://pip.pypa.io/), [`go`](https://github.com/golang/go) modules, [`Composer`](https://github.com/composer/composer) etc. Similar behaviour can be seen with many of the underlying request libraries (notably excepting .NET's HttpClient).
+In Windows, a host of CLI tools commonly used in development don't inherit Windows proxy settings. Tools like [`curl`](https://curl.se/), [`wget`](https://www.gnu.org/software/wget/), [`npm`](https://www.npmjs.com/), [`pip`](https://pip.pypa.io/), [`go`](https://github.com/golang/go) modules, [`Composer`](https://github.com/composer/composer), etc. Similar behaviour can be seen with many of the underlying request libraries (notably excepting .NET's HttpClient).
 
 Proxy environment variables `HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY`, `FTP_PROXY`, `ALL_PROXY` and their uncapitalised variants can help with this, but they can also introduce quirks, particularly when you use a proxy in one environment and not another on the same machine. 
 
@@ -30,7 +30,7 @@ From an ops point of view, there are alternative implementations such as a trans
 
 These notes are for the person who doesn't have the scope to implement a transparent proxy, and the person who is working without local admin (a prudent measure in many environments). Of course, get the blessing of your ops teams before messing around with network configurations, especially on other machines which they will have to support.
 
-From a security perspective in a work network environment, there are good reasons for having a forward proxy. For example, install a Trusted Root CA on each users' machine via GPO and a proxy allows one to Man In The Middle SSL traffic for inspection, filtering and blocking by security software.
+From a security perspective in an operational network environment, there are good reasons for having a forward proxy. For example, install a Trusted Root CA on each user's machine via GPO and a proxy allows one to Man In The Middle SSL traffic for inspection, filtering and blocking by security software.
 
 This helps immeasurably in preventing threats, and as is often the case with *great power*, brings along a host of regulatory and compliance requirements, *great responsibility*.
 
@@ -43,11 +43,13 @@ I do enjoy the touch of irony to this solution in that we add another proxy to s
 **Shell startup scripts:**
 Use shell startup scripts to set and unset proxy environment variables based on environment. This only works for non-authenticated proxies. 
 
-There are trade-offs: adding a bunch of logic to startup scripts isn't ideal, shell startup time is slowed, and if you're doing this on other users' machines, there can be complications around when they actually open shells. Also, if you're working across larger WANs, you may need to check several proxy IPs. And, key is that existing processes won't receive the set or unset environment variables meaning restarting programs is required. 
+There are trade-offs: adding a bunch of logic to startup scripts isn't ideal, shell startup time is slowed, and if you're doing this on other users' machines, there can be complications around when they actually open shells. Also, if you're working across larger WANs, you may need to check several proxy IPs. And, key is that existing processes won't receive the set or unset environment variables, meaning restarting programs is required.
 
-A variation on this is adding service that periodically updates environment variables, though this can potentially disassociate the idea the processes have the env vars they were spawned with.
+A variation on this is adding a service that periodically updates environment variables, though this can potentially disassociate the idea that processes have the env vars they were spawned with.
 
-**Which approach?** I have tended towards the second option, mainly as I implement it on others' machines in addition to my own. The devs and dev environment is in WSL/Ubuntu using Bash startup scripts with a bit of hackery - I leave the Windows env vars alone as it limits the potential for breaking business as usual type work. I might go the first option if I was looking to solve this on my machine only, and of course there would be no other viable option if dealing with authenticated proxies.
+Another variation is to create a script which the user runs manually when they change environment, although this removes any semblance of dynamism.
+
+**Which approach?** I have tended towards the second option, mainly as I implement it on others' machines in addition to my own. The devs and dev environment is in WSL/Ubuntu using Bash startup scripts with a bit of hackery - I leave the Windows env vars alone as it limits the potential for breaking business-as-usual type work. I might go the first option if I was looking to solve this on my machine only, and of course there would be no other viable option if dealing with authenticated proxies.
 
 ### Proxy Chaining a Local Forward Proxy
 A few of the relevant tools in this space:
@@ -55,9 +57,9 @@ A few of the relevant tools in this space:
 - [TinyProxy](https://github.com/tinyproxy/tinyproxy) - small footprint 
 - [Squid](https://github.com/squid-cache/squid) - open-source enterprise grade, widely adopted
 - [Privoxy](https://www.privoxy.org/) - geared towards privacy/filtering
-- [kpx](https://github.com/momiji/kpx) - has failover, supports NTLM and Kerberos upstream, 
+- [kpx](https://github.com/momiji/kpx) - has failover, supports NTLM and Kerberos upstream
 - [px](https://github.com/genotrance/px) - supports NTLM and Kerberos upstream
-- [Proxifier](https://www.proxifier.com/) commercial license, requires admin to install network hook as it intercepts traffic Notably this allows it to proxy regardless of env vars or indeed support in the program being proxied
+- [Proxifier](https://www.proxifier.com/) - commercial license, requires admin to install network hook as it intercepts traffic. Notably this allows it to proxy regardless of env vars or indeed support in the program being proxied
 - [Escobar](https://github.com/savely-krasovsky/escobar) - supports NTLM and Kerberos upstream
 - [Fiddler](https://www.telerik.com/fiddler) - supports NTLM and Kerberos upstream. Debugging/modifying/inspecting focus
 - [Charles](https://www.charlesproxy.com/) - supports NTLM and Kerberos upstream. Debugging/inspecting focus
@@ -68,7 +70,7 @@ kpx is written in Go, supports NTLM and Kerberos, and under active dev for about
 
 [kpx](https://github.com/momiji/kpx) example provided here. 
 
-Note that if deployed on Windows host and accessed from WSL: using default settings at the time of writing, the proxy won't be available at 127.0.0.1 from within WSL (as it refers to the WSL instance itself not Windows host).[You can grab the IP of the Windows host](https://learn.microsoft.com/en-us/windows/wsl/networking#accessing-windows-networking-apps-from-linux-host-ip).
+Note that if deployed on Windows host and accessed from WSL: using default settings at the time of writing, the proxy won't be available at 127.0.0.1 from within WSL (as it refers to the WSL instance itself, not the Windows host). [You can grab the IP of the Windows host](https://learn.microsoft.com/en-us/windows/wsl/networking#accessing-windows-networking-apps-from-linux-host-ip).
 
 #### kpx Implementation
 Download the binary for your chosen system from the [kpx releases page](https://github.com/momiji/kpx/releases). Or, pull the repo and `go run cli/main.go`
@@ -78,7 +80,7 @@ Co-locate a `kpx.yaml` config file with the binary.
 ```yaml
 bind: 127.0.0.1
 port: 7777
-debug: true #This console logs all requests - for demo purposes, would turn it off for day to day
+debug: true # This console logs all requests - for demo purposes, would turn it off for day-to-day
 
 proxies:
   our_work:
@@ -88,7 +90,7 @@ proxies:
 
 rules:
   - host: "*"
-    proxy: our_work,direct #this CSV defines the failover chain, in our case try 'our_work' first and then fall back to direct
+    proxy: our_work,direct # this CSV defines the failover chain, in our case try 'our_work' first and then fall back to direct
 ```
 
 Worth noting, in the current release (v1.11.0) the failover chain is attempted for each request. Also, there was an error related to use of 'direct' in the failover (rules[].host.proxy) - I submitted a [pull request](https://github.com/momiji/kpx/pull/6) to address this.
@@ -106,7 +108,9 @@ There are a few workarounds at time of writing. They introduce a more environmen
 One could say create the proxy in a container, use `macvlan` to give it its own routeable IP (a bit icky), and then use `~/.docker/config.json` to set docker specific proxy env vars using the proxy container's IP (and override the config.json env vars in the proxy container itself to avoid a loop).
 
 ### Startup Script - PowerShell Profile
-Add this to your PowerShell profile to dynamically set proxy environment variables:
+Adding the below script to a PowerShell profile will dynamically set proxy environment variables to those declared in the script.
+
+The testing logic opted for here is `Do we get an OK response from google via the proxy within 1 second?`.
 
 We could do this some loops and less lines, opted for explicit and verbose.
 ```powershell
@@ -119,25 +123,25 @@ $noProxy = "localhost,127.0.0.1,.local,.mycorporatedomain.com,*.mycorporatedomai
 function Set-ProxyEnvironmentVariables {
     param($ProxyUrl, $NoProxyList)
     
-    Write-Host "Setting proxy environment variables..."
+    Write-Host "Setting proxy environment variables..." # both cases for compatibility
     
-    # Set proxy URLs (both cases for compatibility)
+    # Set proxy environment variables for User
     [Environment]::SetEnvironmentVariable("HTTP_PROXY", $ProxyUrl, "User")
     [Environment]::SetEnvironmentVariable("HTTPS_PROXY", $ProxyUrl, "User")
     [Environment]::SetEnvironmentVariable("http_proxy", $ProxyUrl, "User")
     [Environment]::SetEnvironmentVariable("https_proxy", $ProxyUrl, "User")
+    [Environment]::SetEnvironmentVariable("NO_PROXY", $NoProxyList, "User")
+    [Environment]::SetEnvironmentVariable("no_proxy", $NoProxyList, "User")
+
+    # Set proxy environment variables for current process (in case someone uses the shell)
     [Environment]::SetEnvironmentVariable("HTTP_PROXY", $ProxyUrl, "Process")
     [Environment]::SetEnvironmentVariable("HTTPS_PROXY", $ProxyUrl, "Process")
     [Environment]::SetEnvironmentVariable("http_proxy", $ProxyUrl, "Process")
     [Environment]::SetEnvironmentVariable("https_proxy", $ProxyUrl, "Process")
-    
-    # Set no-proxy lists
-    [Environment]::SetEnvironmentVariable("NO_PROXY", $NoProxyList, "User")
-    [Environment]::SetEnvironmentVariable("no_proxy", $NoProxyList, "User")
     [Environment]::SetEnvironmentVariable("NO_PROXY", $NoProxyList, "Process")
     [Environment]::SetEnvironmentVariable("no_proxy", $NoProxyList, "Process")
     
-    Write-Host "Proxy environment variables set successfully"
+    Write-Host "Proxy environment variables set successfully. Restart any processes reliant on them."
 }
 
 function Clear-ProxyEnvironmentVariables {
@@ -151,7 +155,7 @@ function Clear-ProxyEnvironmentVariables {
         [Environment]::SetEnvironmentVariable($variable, $null, "Process")
     }
     
-    Write-Host "Proxy environment variables cleared"
+    Write-Host "Proxy environment variables cleared. Restart any processes reliant on them."
 }
 
 function Test-ProxyConnection {
@@ -178,12 +182,25 @@ if (Test-ProxyConnection -ProxyUrl $proxyUrl) {
 
 PowerShell's user profile startup script varies depending on version, PowerShell 7+ is at `%userprofile%\Documents\PowerShell\profile.ps1`
 
+One could also alter the Windows proxy settings themselves in this script by altering the relevant registry keys.
+```powershell
+#Enable
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name ProxyEnable -Value 1 
+
+#Disable
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings" -Name ProxyEnable -Value 0 
+```
+
 ### Startup Script - Bash via /etc/bash.bashrc (Ubuntu)
-Add this to `/etc/bash.bashrc` for dynamic proxy detection:
+Adding the below to `/etc/bash.bashrc` will dynamically set proxy env vars to those declared in the script.
 
-We use `/etc/bash.bashrc` instead of `/etc/profile` as we want to set this for interactive and non-interactive shells. We use the global startup scripts instead of user-based as we want to set the env vars for all users (which for these machines tends to be a single user). Can't imagine needing to apply this to a multi-user machine.
+We use `/etc/bash.bashrc` instead of `/etc/profile` as we want to set this for interactive and non-interactive shells. We use the global startup scripts instead of user-based ones as we want to set the env vars for all users (which for these machines tends to be a single user). Can't imagine needing to apply this to a multi-user machine. We don't use `/etc/environment` as this applies on boot.
 
-**Note** This script could be much simpler if we opted to not handle Docker Daemon or warn about sudoers env vars.
+The script uses jq for manipulating JSON, make sure it is installed `sudo apt update && sudo apt install jq`
+
+As with the PowerShell variant, this uses the testing logic `Do we get an OK response from Google via the proxy within 1 second?`
+
+**Note:** This script could be much simpler if we opted to not handle Docker Daemon or warn about sudoers env vars.
 
 ```bash
 # === PROXY SETUP SCRIPT START ===
@@ -295,16 +312,18 @@ check_sudoers_proxy_config
 ## Notes on specific usages
 ### Docker (modern) 
 - `docker run` and `docker build` pass in proxy env vars from the process they were executed in automatically
-- `docker pull` uses the Docker Daemon config in `/etc/docker/daemon.json`
+- `docker pull` uses the Docker Daemon config in `/etc/docker/daemon.json`. This settings affects the `FROM` line when building Dockerfiles (as it is effectively a `docker pull`)
 - Dockerfiles - in most cases I have been able to avoid baking in references to proxies or env vars in images (with exception of PEAR/PECL)
 
 An alternate approach to process env vars is using `~/.docker/config.json` - I feel having the process level env vars is better (unless using the local proxy approach in which case setting specific in-container proxy env vars would help work around pointing to local).
 
 The startup script restarting the docker daemon will stop and start containers causing env vars to be propagated.
 
-**Note** Older versions of Docker did not do as much automatically with proxy env vars.
+**Note:** Older versions of Docker did not do as much automatically with proxy env vars.
 
-**Another Note** the proxy config settings of `daemon.json` and `config.json` differ - your go-to LLM will most likely serve you up settings structured for `config.json`.
+**Another Note:** the proxy config settings of `daemon.json` and `config.json` differ - your go-to LLM will most likely serve you up settings structured for `config.json`.
+
+**Third Note:** Docker Daemon technically does respect proxy environment variables, however the process is usually managed by the `init` system (`systemd` in Ubuntu's case) which requires environment variables to be specifically set within a service conf or service override conf. To have a look at the environment variables of the `dockerd` process, see `sudo cat /proc/$(pgrep dockerd)/environ | tr '\0' '\n'`
 
 ### kind 
 Tear down and reinstantiate when moving between environments to allow env vars to propagate (after restarting Docker Daemon):
@@ -389,7 +408,7 @@ Manual proxy configuration is available via [`File > Preferences > Settings`](vs
 
 Manual configuration is available via [`File > Settings > Appearance & Behavior > System Settings > HTTP Proxy`](jetbrains://idea/settings?name=Appearance+%26+Behavior--System+Settings--HTTP+Proxy). The "Auto-detect proxy settings" option works well on Windows but may be less reliable on Linux systems.
 
-Plugin installations, version control operations, and built-in HTTP clients all inherit the configured proxy settings. However, some plugins that bundle their own HTTP libraries may require additional configuration or may otherwise override. Continue.dev in IntelliJ at time of writing, I am looking at you... (it's open source so if I want it fixed, I can look to a mirror)
+Plugin installations, version control operations, and built-in HTTP clients all inherit the configured proxy settings. However, some plugins that bundle their own HTTP libraries may require additional configuration or may otherwise override these settings. Continue.dev in IntelliJ at time of writing, I am looking at you... (it's open source so if I want it fixed, I can look to a mirror)
 
 ## Debugging
 
