@@ -26,11 +26,11 @@ In both Windows and Linux, the implementation of proxy environment variables and
 
 In summary: NO_PROXY behaves differently (asterisk VS leading-dot VS maybe accepts CIDR notation), usage and precedence of capitalised and non-capitalised varies, and some programs may ignore proxy environment variables entirely opting for their own custom config.
 
-From an ops point of view, there are alternative implementations such as a transparent proxy. That is a forward, intercepting proxy which operates without client-side configuration.
+From an ops point of view, there are alternative implementations such as a transparent proxy. That is a forward, intercepting proxy which operates without client-side configuration. This potetentially makes a juicy target for bad actors (all your HTTP traffic eggs in one basket).
 
 These notes are for the person who doesn't have the scope to implement a transparent proxy, and the person who is working without local admin (a prudent measure in many environments). Of course, get the blessing of your ops teams before messing around with network configurations, especially on other machines which they will have to support.
 
-From a security perspective in an operational network environment, there are good reasons for having a forward proxy. For example, install a Trusted Root CA on each user's machine via GPO and a proxy allows one to Man In The Middle SSL traffic for inspection, filtering and blocking by security software.
+From a security perspective in an operational network environment, there are good reasons for having a forward proxy. For example, install a Trusted Root Certificate on each user's machine via GPO and a proxy allows one to Man In The Middle SSL traffic for inspection, filtering and blocking by security software.
 
 This helps immeasurably in preventing threats, and as is often the case with *great power*, brings along a host of regulatory and compliance requirements, *great responsibility*.
 
@@ -66,9 +66,9 @@ A few of the relevant tools in this space:
 
 Of these, CNTLM and kpx handle failover and upstream auth based on a skim of the docs. CNTLM has been around since 2007 and is written in C but doesn't support Kerberos. Apparently [Microsoft is deprecating NTLM](https://techcommunity.microsoft.com/blog/windows-itpro-blog/the-evolution-of-windows-authentication/3926848).
 
-kpx is written in Go, supports NTLM and Kerberos, and under active dev for about a year at time of writing.
+kpx is written in Go, supports NTLM and Kerberos, and under active dev for about a year at time of writing. 
 
-[kpx](https://github.com/momiji/kpx) example provided here. 
+We'll use kpx in our example implementation.
 
 Note that if deployed on Windows host and accessed from WSL: using default settings at the time of writing, the proxy won't be available at 127.0.0.1 from within WSL (as it refers to the WSL instance itself, not the Windows host). [You can grab the IP of the Windows host](https://learn.microsoft.com/en-us/windows/wsl/networking#accessing-windows-networking-apps-from-linux-host-ip).
 
@@ -380,15 +380,20 @@ RUN pear config-set http_proxy $HTTP_PROXY
 RUN pecl install your-package
 ```
 
-### .NET Windows Notes
+### .NET 7.0 & 8.0 Windows Notes
 The out-of-the-box requests library `HttpClient` in .NET respects Windows proxy settings. It stops respecting these settings as soon as one of the env vars is set, so correctly setting HTTP_PROXY and missing NO_PROXY could cause issues when accessing local resources. 
+
+The default behaviour can be altered in the code.
 
 Keep aware of the env vars being applied for a specific process - e.g. your instance of Rider may be executing programs using a specific version PowerShell which has a different startup script to the one you expect.
 
-### .NET no_proxy syntax
+### .NET 7.0 & 8.0 no_proxy syntax
 Wildcards are not `*.myexcludeddomain.com`, this can come as a surprise if you derived your exclusions from say your Windows proxy settings which does support asterisk based wildcards. Wildcard format is leading dot `.myexcludeddomain.com`
 
 Line from relevant lib: https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/HttpEnvironmentProxy.cs#L251
+
+### Framework 4.8 Notes
+By default, programs compiled to Framework 4.8 respect Windows proxy settings. They do not respect proxy environment variables.
 
 ### VSCode and IntelliJ Proxy Behaviour
 
