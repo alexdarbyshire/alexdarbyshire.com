@@ -22,7 +22,7 @@ pluralizelisttitles = false
   unsafe = true
 
 [permalinks]
-    posts = "/:year/:month/:slug/"
+    posts = "/:slug/"
     page = "/:slug/"
 
 [sitemap]
