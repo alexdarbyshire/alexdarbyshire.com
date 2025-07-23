@@ -1,0 +1,104 @@
+{
+  "routes": [
+    {
+      "route": "/2024/01/a-conversation-with-q-on-the-nature-of-time/",
+      "redirect": "/a-conversation-with-q-on-the-nature-of-time/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2024/01/migrating-from-docker-compose-to-kubernetes-k3s/",
+      "redirect": "/migrating-from-docker-compose-to-kubernetes-k3s/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2024/01/self-hosted-website-with-hugo-docker-and-cloudflare-tunnels/",
+      "redirect": "/self-hosted-website-with-hugo-docker-and-cloudflare-tunnels/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2024/01/streamlining-secret-management-with-vault-in-k3s-kubernetes/",
+      "redirect": "/streamlining-secret-management-with-vault-in-k3s-kubernetes/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2024/01/tempting-fate-from-highlander-to-hugo/",
+      "redirect": "/tempting-fate-from-highlander-to-hugo/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2024/02/automating-vm-creation-on-proxmox-terraform-bpg/",
+      "redirect": "/automating-vm-creation-on-proxmox-terraform-bpg/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2024/02/convert-pytorch-to-safetensors-and-quantise-to-exl2/",
+      "redirect": "/convert-pytorch-to-safetensors-and-quantise-to-exl2/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2024/02/kubernetes-log-alchemy-seq-fluent-bit/",
+      "redirect": "/kubernetes-log-alchemy-seq-fluent-bit/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2024/02/scaling-github-actions-with-kubernetes-a-guide-to-arc-deployment/",
+      "redirect": "/scaling-github-actions-with-kubernetes-a-guide-to-arc-deployment/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2024/02/unplanned-downtime-opportunities/",
+      "redirect": "/unplanned-downtime-opportunities/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2024/03/deploy-cloud-openai-compatible-endpoint-on-runpod-test-k6/",
+      "redirect": "/deploy-cloud-openai-compatible-endpoint-on-runpod-test-k6/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2024/03/msi-evo-a13m-linux-notes/",
+      "redirect": "/msi-evo-a13m-linux-notes/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2025/06/azure-private-vnet-dev-access-options/",
+      "redirect": "/azure-private-vnet-dev-access-options/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2025/06/dockerfile-dev-ergonomics-tilt/",
+      "redirect": "/dockerfile-dev-ergonomics-tilt/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2025/06/from-proxmox-to-azure-static-web-apps-return-to-simplicity/",
+      "redirect": "/from-proxmox-to-azure-static-web-apps-return-to-simplicity/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2025/06/meta-writing-hugo-content-assistant-vscodium-roo-code/",
+      "redirect": "/meta-writing-hugo-content-assistant-vscodium-roo-code/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2025/06/wsl-mtu-issues-azure-sstp-vpn/",
+      "redirect": "/wsl-mtu-issues-azure-sstp-vpn/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2025/07/http-forward-proxy-some-of-the-time/",
+      "redirect": "/http-forward-proxy-some-of-the-time/",
+      "statusCode": 301
+    },
+    {
+      "route": "/2025/07/nginx-dynamic-hostnames-docker-k8s-aca/",
+      "redirect": "/nginx-dynamic-hostnames-docker-k8s-aca/",
+      "statusCode": 301
+    }
+  ],
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/404.html"
+    }
+  }
+}
