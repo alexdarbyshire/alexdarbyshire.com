@@ -1,0 +1,24 @@
+{{/*
+  Applies all text overlays to an image
+  
+  Usage:
+  {{ $image := partial "opengraph/apply-overlays" (dict "image" $baseImage "overlays" $overlaySlice) }}
+*/}}
+
+{{ $image := .image }}
+{{ $overlays := .overlays }}
+{{ $font := resources.Get "opengraph/FiraCode-Light.ttf" }}
+
+{{ range $overlays }}
+  {{ $textOptions := dict 
+    "color" .color
+    "x" .x
+    "y" .y
+    "size" .size
+    "lineSpacing" .lineSpacing
+    "font" $font 
+  }}
+  {{ $image = $image | images.Filter (images.Text .text $textOptions) }}
+{{ end }}
+
+{{ return $image }}

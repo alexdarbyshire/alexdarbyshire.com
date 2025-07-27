@@ -1,0 +1,64 @@
+{{/*
+  Creates a complete terminal command block with prompt, command, and response
+  
+  Usage:
+  {{ $block := partial "opengraph/create-terminal-block" (dict 
+    "command" "curl https://example.com | xq -q \"title\""
+    "response" "My Page Title"
+    "startY" 170
+    "colors" $colors
+    "layout" $layout
+  ) }}
+*/}}
+
+{{ $colors := .colors }}
+{{ $layout := .layout }}
+{{ $startY := .startY }}
+{{ $startX := $layout.startX }}
+{{ $lineHeight := $layout.lineHeight }}
+
+{{ $overlays := slice }}
+
+{{/* Prompt line */}}
+{{ $promptOverlay := partial "opengraph/create-overlay" (dict 
+  "text" "alex@dev "
+  "color" $colors.accent 
+  "x" $startX 
+  "y" $startY 
+) }}
+{{ $overlays = $overlays | append $promptOverlay }}
+
+{{ $branchOverlay := partial "opengraph/create-overlay" (dict 
+  "text" "git:(main)"
+  "color" $colors.foreground 
+  "continueX" true
+  "y" $startY
+  "prevOverlay" $promptOverlay
+  "spacing" $layout.promptSpacing
+) }}
+{{ $overlays = $overlays | append $branchOverlay }}
+
+{{ $commandOverlay := partial "opengraph/create-overlay" (dict 
+  "text" (printf "$ %s" .command)
+  "color" $colors.default 
+  "continueX" true
+  "y" $startY
+  "prevOverlay" $branchOverlay
+  "spacing" $layout.promptSpacing
+) }}
+{{ $overlays = $overlays | append $commandOverlay }}
+
+{{/* Response line */}}
+{{ $responseY := add $startY $lineHeight }}
+{{ $responseOverlay := partial "opengraph/create-overlay" (dict
+  "text" .response
+  "color" $colors.foreground 
+  "x" $startX
+  "y" $responseY
+  "size" 30
+)}}
+{{ $overlays = $overlays | append $responseOverlay }}
+
+{{ $nextY := add $responseY $lineHeight }}
+
+{{ return dict "overlays" $overlays "nextY" $nextY }}

@@ -1,0 +1,44 @@
+{{/*
+  Creates a text overlay with position calculation
+  
+  Usage:
+  {{ $overlay := partial "opengraph/create-overlay" (dict 
+    "text" "Hello World"
+    "color" "#ffffff"
+    "x" 35
+    "y" 170
+    "continueX" true
+    "continueY" true
+    "prevOverlay" $previousOverlay
+    "spacing" 10
+  ) }}
+*/}}
+
+{{ $text := .text }}
+{{ $prevOverlay := .prevOverlay }}
+{{ $spacing := .spacing | default 10 }}
+
+{{ $x := .x | default 35 }}
+{{ $y := .y | default 170 }}
+{{ $size := .size | default 16 }}
+{{ $lineSpacing := .lineSpacing | default 6 }}
+
+{{/* Calculate positions based on previous overlay */}}
+{{ if and .continueX $prevOverlay }}
+  {{ $prevWidth := mul (len $prevOverlay.text) ($prevOverlay.size | mul 0.6) }}
+  {{ $x = add $prevOverlay.x $prevWidth $spacing }}
+{{ end }}
+
+{{ if and .continueY $prevOverlay }}
+  {{ $lineHeight := add $prevOverlay.size $lineSpacing }}
+  {{ $y = add $prevOverlay.y $lineHeight }}
+{{ end }}
+
+{{ return dict 
+  "text" $text
+  "color" (.color | default "#ebdbb2")
+  "x" $x
+  "y" $y
+  "size" $size
+  "lineSpacing" $lineSpacing
+}}

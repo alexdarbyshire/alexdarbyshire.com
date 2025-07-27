@@ -1,0 +1,71 @@
+{{/* 
+Code to generate Open Graph images at build time
+Base image with multiple text overlays
+Hugo does not support custom functions, we use partials to approximate functions. A bit hacky and by no means dry (we could go further by creating additional partials)
+*/}}
+{{ $images := $.Resources.ByType "image" }}
+{{ $featured := $images.GetMatch "*feature*" }}
+{{ if not $featured }}{{ $featured = $images.GetMatch "{*cover*,*thumbnail*}" }}{{ end }}
+{{ if not $featured }}
+    {{ $featured = resources.Get "/opengraph/og-image-base.png" }}
+  
+    {{/* Front matter to variables */}}
+    {{ $title := .Title }}
+    {{ $description := or .Description "No meta description" }}
+
+    {{/* Theme Configuration */}}
+    {{ $colors := dict 
+      "foreground" "#ebdbb2"
+      "accent" "#8ec07c" 
+      "background" "#1d2021"
+      "default" "#ffffff"
+    }}
+
+    {{/* Layout Configuration */}}
+    {{ $layout := dict 
+      "startX" 35
+      "startY" 170
+      "lineHeight" 40 
+      "blockSpacing" 80
+      "promptSpacing" 1
+    }}
+
+    {{/* Terminal commands configuration */}}
+    {{ $commands := slice 
+      (dict 
+        "command" (printf "curl %s | xq -q \"title\"" .Permalink)
+        "response" $title
+      )
+      (dict 
+        "command" (printf "curl %s |\n xq -q 'meta[name=\"description\"]' -a content" .Permalink)
+        "response" $description 
+      )
+    }}
+
+    {{/* Generate all terminal blocks */}}
+    {{ $overlays := slice }}
+    {{ $currentY := $layout.startY }}
+
+    {{ range $commands }}
+      {{ $block := partial "opengraph/create-terminal-block" (dict 
+        "command" .command
+        "response" .response
+        "startY" $currentY
+        "colors" $colors
+        "layout" $layout
+      ) }}
+      {{ range $block.overlays }}
+        {{ $overlays = $overlays | append . }}
+      {{ end }}
+      {{ $currentY = add $block.nextY $layout.blockSpacing }}
+    {{ end }}
+
+    {{/* Apply all overlays at once */}}
+    {{ $featured = partial "opengraph/apply-overlays" (dict 
+        "image" $featured 
+        "overlays" $overlays 
+    ) }}
+
+{{ end }}
+
+{{ return $featured }}
