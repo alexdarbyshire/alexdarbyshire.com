@@ -21,7 +21,7 @@
 
 {{/* Prompt line */}}
 {{ $promptOverlay := partial "opengraph/create-overlay" (dict 
-  "text" "alex@dev "
+  "text" "alex@dev"
   "color" $colors.accent 
   "x" $startX 
   "y" $startY 
@@ -39,7 +39,7 @@
 {{ $overlays = $overlays | append $branchOverlay }}
 
 {{ $commandOverlay := partial "opengraph/create-overlay" (dict 
-  "text" (printf "$ %s" .command)
+  "text" (printf "$%s" .command)
   "color" $colors.default 
   "continueX" true
   "y" $startY

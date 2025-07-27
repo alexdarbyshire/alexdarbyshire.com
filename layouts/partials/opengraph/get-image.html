@@ -26,15 +26,15 @@ Hugo does not support custom functions, we use partials to approximate functions
     {{ $layout := dict 
       "startX" 35
       "startY" 170
-      "lineHeight" 40 
-      "blockSpacing" 80
-      "promptSpacing" 1
+      "lineHeight" 50 
+      "blockSpacing" 60
+      "promptSpacing" 10
     }}
 
     {{/* Terminal commands configuration */}}
     {{ $commands := slice 
       (dict 
-        "command" (printf "curl %s | xq -q \"title\"" .Permalink)
+        "command" (printf "curl %s |\nxq -q \"title\"" .Permalink)
         "response" $title
       )
       (dict 
