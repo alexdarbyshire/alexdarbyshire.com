@@ -1,6 +1,6 @@
 baseURL = "https://www.alexdarbyshire.com"
 languageCode = "en-au"
-title = "Alex Darbyshire"
+title = "Alex Darbyshire: Dev Notes"
 theme = 'terminal'
 
 # Required for Chroma and custom syntax highlighting
@@ -43,6 +43,8 @@ pluralizelisttitles = false
   showLastUpdated = false
   readingTime = true
   Toc = true 
+  subtitle = ""
+  homeTitleOpengraphImage = "Dev Notes"
   # TocTitle = "Table of Contents"  # Uncomment to customize
 
 [params.logo]
@@ -52,9 +54,7 @@ pluralizelisttitles = false
 [languages]
   [languages.en]
     languageName = "English"
-    title = "Alex Darbyshire"
     [languages.en.params]
-      subtitle = ""  # Add your subtitle here if desired
       owner = "Alex Darbyshire"
       keywords = ""  # Add your keywords here
       menuMore = "Show more"

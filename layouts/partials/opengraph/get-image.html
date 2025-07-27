@@ -10,8 +10,9 @@ Hugo does not support custom functions, we use partials to approximate functions
     {{ $featured = resources.Get "/opengraph/og-image-base.png" }}
   
     {{/* Front matter to variables */}}
-    {{ $title := .Title }}
-    {{ $description := or .Description "No meta description" }}
+    {{ $isHomePage := eq .RelPermalink "/" }}
+    {{ $title := cond $isHomePage .Site.Params.homeTitleOpengraphImage .Title }}
+    {{ $description := or (cond .IsHome .Site.Params.Subtitle .Description) "No meta description" }}
 
     {{/* Theme Configuration */}}
     {{ $colors := dict 
