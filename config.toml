@@ -21,6 +21,12 @@ pluralizelisttitles = false
 [markup.goldmark.renderer]
   unsafe = true
 
+# Enable Markdown attributes for images
+[markup.goldmark.parser]
+  wrapStandAloneImageWithinParagraph = false
+  [markup.goldmark.parser.attribute]
+    block = true
+
 [permalinks]
     posts = "/:slug/"
     page = "/:slug/"

@@ -37,3 +37,12 @@
   min-width: max-content;
 }
 
+/* Center images with .center class */
+figure.center {
+  text-align: center;
+}
+
+figure.center img {
+  display: inline-block;
+}
+
