@@ -2,6 +2,7 @@
 title: "Meta-Writing: Creating a Hugo Content Assistant with VSCodium and Roo Code"
 date: 2025-06-08T18:10:00+10:00
 author: "Alex Darbyshire"
+description: "Building an LLM-powered writing assistant in Roo Code. A meta exercise - this post is written by an LLM based on analysis of the author's posts."
 slug: "meta-writing-hugo-content-assistant-vscodium-roo-code"
 toc: true
 tags:

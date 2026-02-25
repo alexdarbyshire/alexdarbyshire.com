@@ -2,6 +2,7 @@
 title: "Scaling GitHub Actions with Kubernetes: A Guide to ARC Deployment"
 date: 2024-02-03T23:08:09+10:00
 author: "Alex Darbyshire"
+description: "Setting up Actions Runner Controller (ARC) to run GitHub Actions CI/CD pipelines on your own Kubernetes infrastructure."
 banner: "img/banners/space-arc-at-sail.jpeg"
 toc: true
 tags:

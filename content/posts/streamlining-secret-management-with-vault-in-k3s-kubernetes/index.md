@@ -2,6 +2,7 @@
 title: "Streamlining Secret Management with Vault in K3s Kubernetes"
 date: 2024-01-30T06:04:09+10:00
 author: "Alex Darbyshire"
+description: "Deploying HashiCorp Vault to K3s with Helm and configuring it via Terraform. An example of hitting in a nail with a jackhammer."
 banner: "img/banners/shhh-secrets-in-a-big-vault.jpeg"
 toc: true
 tags:

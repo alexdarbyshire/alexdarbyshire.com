@@ -2,9 +2,10 @@
 title: "Tempting Fate: From Highlander to Hugo"
 date: 2024-01-27T08:39:09+10:00
 author: "Alex Darbyshire"
+description: "An introduction to this site, its history as a Highlander movie reference, and the plan to write about tech and the occasional musing."
 #type: post
 banner: "img/banners/highlander-steampunk-mangastyle.jpeg"
-tags: 
+tags:
   - Hugo
   - Musing
 ---

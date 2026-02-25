@@ -3,6 +3,7 @@
 title: "Vim Keybindings as a Source of Flow"
 date: 2026-02-25T09:06:00+10:00
 author: "Alex Darbyshire"
+description: "My personal story of learning Vim keybindings with a focus on the flow state and skill aquisition."
 slug: "vim-keybindings-as-a-source-of-flow"
 toc: true
 tags:

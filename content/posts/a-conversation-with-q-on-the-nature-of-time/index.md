@@ -7,7 +7,7 @@ tags:
   - LLMs
   - Star Trek
   - Musing
-Description: "A short example of using LLMs to converse with a fictional character from a seminal science fiction "
+Description: "A short example of using LLMs to converse with a fictional character from a seminal science fiction universe."
 ---
 
 Recently I have been playing with open-source LLMs (Large Language Models), LLMs being the technology behind ChatGPT. 

@@ -2,6 +2,7 @@
 title: "Azure Private VNET Development Access Options"
 date: 2025-06-15T16:28:00+10:00
 author: "Alex Darbyshire"
+description: "Comparing options for developer access to Azure private VNETs (other than hub and spoke with S2S)"
 slug: "azure-private-vnet-dev-access-options"
 toc: true
 tags:

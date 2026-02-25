@@ -2,6 +2,7 @@
 title: "Dynamic Hostnames in Nginx: Docker, Kubernetes, and Azure Container Apps"
 date: 2025-07-05T09:52:00+10:00
 author: "Alex Darbyshire"
+description: "Solving Nginx's 'host not found in upstream' startup failure using dynamic hostnames across Docker, Kubernetes, and Azure Container Apps."
 slug: "nginx-dynamic-hostnames-docker-k8s-aca"
 toc: true
 tags:

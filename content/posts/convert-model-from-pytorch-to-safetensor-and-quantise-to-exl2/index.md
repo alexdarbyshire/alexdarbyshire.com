@@ -2,6 +2,7 @@
 title: "Converting a Pytorch Model to Safetensors Format and Quantising to Exl2"
 date: 2024-02-24T17:05:32+10:00
 author: "Alex Darbyshire"
+description: "Notes on converting a transformer model from PyTorch to Safetensors format and quantising to ExLlamaV2, using a code-based calibration dataset."
 banner: "img/banners/calibrating-a-language-model.jpg"
 slug: "convert-pytorch-to-safetensors-and-quantise-to-exl2"
 toc: true

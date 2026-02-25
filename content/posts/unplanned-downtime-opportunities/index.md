@@ -2,6 +2,7 @@
 title: "Navigating Unplanned Downtime: Turning Challenges into Opportunities"
 date: 2024-02-10T00:08:09+10:00
 author: "Alex Darbyshire"
+description: "A reflection on the language, culture, and practices around unplanned downtime."
 banner: "img/banners/circuitry-holding-a-500.jpeg"
 slug: "Unplanned Downtime Opportunities"
 toc: true

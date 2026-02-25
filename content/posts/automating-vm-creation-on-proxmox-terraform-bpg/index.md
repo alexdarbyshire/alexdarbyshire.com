@@ -2,6 +2,7 @@
 title: "Automating Virtual Machine Creation on Proxmox with Terraform and bpg"
 date: 2024-02-17T17:35:15+10:00
 author: "Alex Darbyshire"
+description: "Using Terraform with the bpg provider to automate virtual machine creation on Proxmox—infrastructure as code for a home lab."
 banner: "img/banners/aircraft-deploying-machines.jpg"
 slug: "Automating VM Creation On Proxmox Terraform bpg"
 toc: true

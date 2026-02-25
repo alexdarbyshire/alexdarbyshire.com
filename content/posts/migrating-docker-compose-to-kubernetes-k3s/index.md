@@ -2,6 +2,7 @@
 title: "Migrating from Docker Compose to Kubernetes (K3s)"
 date: 2024-01-28T11:54:09+10:00
 author: "Alex Darbyshire"
+description: "Moving from Docker Compose to K3s, a lightweight Kubernetes distribution—an accessible first step into container orchestration at scale."
 banner: "img/banners/docker-whale-migration-to-kubernetes.jpeg"
 toc: true
 tags:

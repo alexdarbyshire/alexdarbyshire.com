@@ -2,9 +2,10 @@
 title: "Self-Hosted Website with Hugo, Docker, and Cloudflare Tunnels"
 date: 2024-01-27T13:09:09+10:00
 author: "Alex Darbyshire"
+description: "A walkthrough of building a Hugo site with Docker, exposing it to the internet via Cloudflare Tunnels, and managing it with Docker Compose."
 banner: "img/banners/person-working-on-connecting-hugo.jpeg"
 toc: true
-tags: 
+tags:
   - Hugo
   - Docker
   - Cloudflare

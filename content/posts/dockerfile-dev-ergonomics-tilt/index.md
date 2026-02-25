@@ -2,8 +2,9 @@
 title: "Improving Dockerfile Development Cycle with Tilt, and Making R Builds Fail Fast"
 date: 2025-06-24T07:45:00+10:00
 author: "Alex Darbyshire"
+description: "Using Tilt for hot reloading during Dockerfile development, and solving R's silent package install failure problem with install2.r."
 slug: "dockerfile-dev-ergonomics-tilt"
-toc: true 
+toc: true
 tags:
   - R
   - Docker

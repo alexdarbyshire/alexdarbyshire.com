@@ -2,6 +2,7 @@
 title: "An Ode to the Occasional Proxy: Dynamic HTTP Forward Proxy Configuration in Windows, WSL/Ubuntu, and Docker"
 date: 2025-07-18T09:52:00+10:00
 author: "Alex Darbyshire"
+description: "Notes on developing with a HTTP forward proxy required in some envs and not others"
 slug: "http-forward-proxy-some-of-the-time"
 toc: true
 tags:

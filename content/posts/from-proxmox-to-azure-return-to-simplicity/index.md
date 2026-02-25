@@ -3,9 +3,10 @@
 title: "From Proxmox to Azure Static Web Apps: Return to Simplicity"
 date:  2025-06-01T09:01:01+10:00
 author: "Alex Darbyshire"
+description: "Migration from a K3s stack to Azure Static Web Apps - a 'Just Works' site and deployment flow"
 TOC: false
-tags: 
-  - Azure 
+tags:
+  - Azure
 ---
 
 

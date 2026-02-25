@@ -2,6 +2,7 @@
 title: "Deploying an OpenAI Compatible Endpoint on Runpod with vLLM and K6 Load Testing"
 date: 2024-03-03T15:45:23+10:00
 author: "Alex Darbyshire"
+description: "Renting a cloud GPU from RunPod, running a large language model via vLLM's OpenAI compatible endpoint, and load testing it with K6."
 banner: "img/banners/load-testing-a-cloud.jpeg"
 slug: "deploy-cloud-openai-compatible-endpoint-on-runpod-test-k6"
 toc: tru

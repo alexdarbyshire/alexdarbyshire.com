@@ -2,6 +2,7 @@
 title: "WSL MTU Issues with Azure SSTP VPN Connections"
 date: 2025-06-20T21:26:00+10:00
 author: "Alex Darbyshire"
+description: "Diagnosing and fixing MTU mismatch issues in WSL when using Azure SSTP point-to-site VPN. The cause of (previously) mysterious hanging SSL connections."
 slug: "wsl-mtu-issues-azure-sstp-vpn"
 toc: true
 tags:

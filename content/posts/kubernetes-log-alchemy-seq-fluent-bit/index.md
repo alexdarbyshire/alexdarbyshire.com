@@ -2,6 +2,7 @@
 title: "Log Alchemy: Meaningful Kubernetes Logs with Seq and Fluent Bit"
 date: 2024-02-11T00:02:15+10:00
 author: "Alex Darbyshire"
+description: "From kubectl logs in a terminal to structured log data searchable and visualisable in Seq, shipped via Fluent Bit."
 banner: "img/banners/seq-dashboard-alexdarbyshire-com.jpg"
 slug: "Kubernetes Log Alchemy Seq Fluent Bit"
 toc: true
