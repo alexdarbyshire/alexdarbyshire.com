@@ -1,0 +1,39 @@
+{{- if .IsPage -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "{{ if eq .Type "posts" }}BlogPosting{{ else }}Article{{ end }}",
+  "headline": {{ .Title | jsonify }},
+  "description": {{ if .Description }}{{ .Description | plainify | jsonify }}{{ else }}{{ .Summary | plainify | jsonify }}{{ end }},
+  "url": {{ .Permalink | jsonify }},
+  "datePublished": {{ .Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+  {{- if not .Lastmod.IsZero }}
+  "dateModified": {{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+  {{- else }}
+  "dateModified": {{ .Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+  {{- end }}
+  "author": {
+    "@type": "Person",
+    "name": {{ if .Params.author }}{{ .Params.author | jsonify }}{{ else }}{{ $.Site.Params.author | jsonify }}{{ end }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": {{ $.Site.Title | jsonify }},
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ (printf "%s%s" $.Site.BaseURL "favicon.png") | jsonify }}
+    }
+  },
+  {{- $ogImage := partial "opengraph/get-image.html" . }}
+  "image": {{ $ogImage.Permalink | jsonify }},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ .Permalink | jsonify }}
+  }
+  {{- with .Params.keywords -}}
+  ,
+  "keywords": {{ delimit . ", " | jsonify }}
+  {{- end }}
+}
+</script>
+{{- end -}}
