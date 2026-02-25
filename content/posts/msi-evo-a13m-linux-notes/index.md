@@ -1,13 +1,15 @@
 ---
 title: "MSI Evo Prestige A13M Linux Mint 21.3 Installation Notes"
 date: 2024-03-16T08:17:15+10:00
+lastmod: 2026-02-26T0:09:05+10:00
 author: "Alex Darbyshire"
 banner: "img/banners/penguin-with-mint-leaves.jpeg"
 slug: "msi-evo-a13m-linux-notes"
 toc: false
 tags:
   - Linux
-description: How to get Linux to recognise MSI Evo Presitge A13M's hard drive and Wifi. 
+  - Fedora
+description: How to get Linux to recognise MSI Evo Presitge A13M's hard drive and Wifi. Updated Jan 2026 with Fedora migration notes.
 ---
 
 A brief set of notes on getting Debian-based Linux up and running on an MSI Evo Prestige A13M (028AU) Laptop. 
@@ -24,6 +26,16 @@ The overall approach:
  * **Download and install WiFi driver**
 
 **Bolded steps are documented.**
+
+### Update: January 2026 - Migration to Fedora
+
+Ended up swapping Mint out for Fedora.
+
+Mint would occasionaly hang requiring the emergency keyboard reset [`Alt` + `Prt Scr` + `REISUB`](https://gist.github.com/genyrosk/795541ecb8ae7be70948561966d48ebf).
+
+None of the typical stats (IOps, memory, disk, CPU) were maxing out. Suspect it was the Mint stable kernel choice not fully supporting newer power friendly chipset instructions. Chose Fedora as it aims to keep up with the kernel releases. 
+
+After swapping, Fedora has run flawlessly to date.
 
 ### Getting Linux to Recognise Hard Drive on MSI Evo A13M by Disabling VMD and RST
 
