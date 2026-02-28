@@ -40,7 +40,7 @@ pluralizelisttitles = false
 
 [params]
   author = "Alex Darbyshire"
-  description = "Dev notes by Alex Darbyshire — DevOps, infrastructure, Kubernetes, Terraform, and LLM deployment."
+  description = "Dev notes by Alex Darbyshire — Linux, Kubernetes, Docker, Azure, and LLMs."
   dateFormat = "January 2, 2006"
   contentTypeName = "posts"
   showMenuItems = 3

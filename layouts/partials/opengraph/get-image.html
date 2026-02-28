@@ -12,7 +12,7 @@ Hugo does not support custom functions, we use partials to approximate functions
     {{/* Front matter to variables */}}
     {{ $isHomePage := eq .RelPermalink "/" }}
     {{ $title := cond $isHomePage .Site.Params.homeTitleOpengraphImage .Title }}
-    {{ $description := or (cond .IsHome .Site.Params.Subtitle .Description) "No meta description" }}
+    {{ $description := or (cond .IsHome .Site.Params.Description .Description) "No meta description" }}
 
     {{/* Theme Configuration */}}
     {{ $colors := dict 
