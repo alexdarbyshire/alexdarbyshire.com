@@ -3,12 +3,15 @@
 {
   "@context": "https://schema.org",
   "@type": "Person",
-  "@id": {{ $.Site.BaseURL | jsonify }},
+  "@id": {{ $.Site.BaseURL | jsonify | safeJS }},
   "name": "Alex Darbyshire",
-  "url": {{ $.Site.BaseURL | jsonify }},
+  "url": {{ $.Site.BaseURL | jsonify | safeJS }},
 "sameAs": [
     "https://github.com/alexdarbyshire",
-    "https://linkedin.com/in/alex-darbyshire-au"
+    "https://linkedin.com/in/alex-darbyshire-au",
+    "https://dev.to/alexdarbyshire",
+    "https://alexdarbyshire.hashnode.dev/",
+    "https://medium.com/@alexdarbyshire"
   ]
 }
 </script>

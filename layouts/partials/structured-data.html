@@ -1,43 +1,61 @@
-{{- if .IsPage -}}
+{{- if .IsHome -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ $.Site.Title | jsonify | safeJS }},
+  "url": {{ $.Site.BaseURL | jsonify | safeJS }},
+  "description": {{ $.Site.Params.Description | jsonify | safeJS }},
+  "author": {
+    "@type": "Person",
+    "name": "Alex Darbyshire",
+    "url": {{ $.Site.BaseURL | jsonify | safeJS }}
+  }
+}
+</script>
+{{- else if .IsPage -}}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "{{ if eq .Type "posts" }}BlogPosting{{ else }}Article{{ end }}",
-  "headline": {{ .Title | jsonify }},
-  "description": {{ if .Description }}{{ .Description | plainify | jsonify }}{{ else }}{{ .Summary | plainify | jsonify }}{{ end }},
-  "url": {{ .Permalink | jsonify }},
-  "datePublished": {{ .Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+  "headline": {{ .Title | jsonify | safeJS }},
+  "description": {{ if .Description }}{{ .Description | plainify | jsonify | safeJS }}{{ else }}{{ .Summary | plainify | jsonify | safeJS }}{{ end }},
+  "url": {{ .Permalink | jsonify | safeJS }},
+  "datePublished": {{ .Date.UTC.Format "2006-01-02T15:04:05Z07:00" | jsonify | safeJS }},
   {{- if not .Lastmod.IsZero }}
-  "dateModified": {{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+  "dateModified": {{ .Lastmod.UTC.Format "2006-01-02T15:04:05Z07:00" | jsonify | safeJS }},
   {{- else }}
-  "dateModified": {{ .Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+  "dateModified": {{ .Date.UTC.Format "2006-01-02T15:04:05Z07:00" | jsonify | safeJS }},
   {{- end }}
   "author": {
     "@type": "Person",
-    "name": {{ if .Params.author }}{{ .Params.author | jsonify }}{{ else }}{{ $.Site.Params.author | jsonify }}{{ end }},
-    "url": {{ $.Site.BaseURL | jsonify }},
+    "name": {{ if .Params.author }}{{ .Params.author | jsonify | safeJS }}{{ else }}{{ $.Site.Params.author | jsonify | safeJS }}{{ end }},
+    "url": {{ $.Site.BaseURL | jsonify | safeJS }},
     "sameAs": [
       "https://github.com/alexdarbyshire",
-      "https://linkedin.com/in/alex-darbyshire-au"
+      "https://linkedin.com/in/alex-darbyshire-au",
+      "https://dev.to/alexdarbyshire",
+      "https://alexdarbyshire.hashnode.dev/",
+      "https://medium.com/@alexdarbyshire"
     ]
   },
   "publisher": {
     "@type": "Organization",
-    "name": {{ $.Site.Title | jsonify }},
+    "name": {{ $.Site.Title | jsonify | safeJS }},
     "logo": {
       "@type": "ImageObject",
-      "url": {{ (printf "%s%s" $.Site.BaseURL "favicon.png") | jsonify }}
+      "url": {{ (printf "%s%s" $.Site.BaseURL "favicon.png") | jsonify | safeJS }}
     }
   },
   {{- $ogImage := partial "opengraph/get-image.html" . }}
-  "image": {{ $ogImage.Permalink | jsonify }},
+  "image": {{ $ogImage.Permalink | jsonify | safeJS }},
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": {{ .Permalink | jsonify }}
+    "@id": {{ .Permalink | jsonify | safeJS }}
   }
   {{- with .Params.keywords -}}
   ,
-  "keywords": {{ delimit . ", " | jsonify }}
+  "keywords": {{ delimit . ", " | jsonify | safeJS }}
   {{- end }}
 }
 </script>
