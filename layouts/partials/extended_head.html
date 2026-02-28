@@ -1,0 +1,14 @@
+{{- /* @Person schema — establishes entity identity and disambiguates from other Alex Darbyshire entities */ -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": {{ $.Site.BaseURL | jsonify }},
+  "name": "Alex Darbyshire",
+  "url": {{ $.Site.BaseURL | jsonify }},
+"sameAs": [
+    "https://github.com/alexdarbyshire",
+    "https://linkedin.com/in/alex-darbyshire-au"
+  ]
+}
+</script>

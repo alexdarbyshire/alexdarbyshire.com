@@ -14,7 +14,12 @@
   {{- end }}
   "author": {
     "@type": "Person",
-    "name": {{ if .Params.author }}{{ .Params.author | jsonify }}{{ else }}{{ $.Site.Params.author | jsonify }}{{ end }}
+    "name": {{ if .Params.author }}{{ .Params.author | jsonify }}{{ else }}{{ $.Site.Params.author | jsonify }}{{ end }},
+    "url": {{ $.Site.BaseURL | jsonify }},
+    "sameAs": [
+      "https://github.com/alexdarbyshire",
+      "https://linkedin.com/in/alex-darbyshire-au"
+    ]
   },
   "publisher": {
     "@type": "Organization",

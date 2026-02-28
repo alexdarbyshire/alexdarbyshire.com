@@ -1,6 +1,6 @@
 baseURL = "https://www.alexdarbyshire.com"
 languageCode = "en-au"
-title = "Alex Darbyshire: Dev Notes"
+title = "Alex Darbyshire"
 theme = 'terminal'
 
 # Required for Chroma and custom syntax highlighting
@@ -39,6 +39,8 @@ pluralizelisttitles = false
     id = 'G-C05H5792C7'
 
 [params]
+  author = "Alex Darbyshire"
+  description = "Dev notes by Alex Darbyshire — DevOps, infrastructure, Kubernetes, Terraform, and LLM deployment."
   dateFormat = "January 2, 2006"
   contentTypeName = "posts"
   showMenuItems = 3
